@@ -41,7 +41,6 @@
             width (love.graphics.getPixelWidth instance.image)
             height (love.graphics.getPixelHeight instance.image)
             ]
-            (print width height)
             (set instance.X_MID 30)
             (set instance.Y_MID 45)
         )
@@ -66,7 +65,6 @@
 
             ; choose new direction
             (let [[theta velx vely] (getranddir)]
-                (print "Theta" theta)
                 (set self.rotation  (- (+ theta math.pi)))
                 (set self.velx (* self.MAX_VEL velx))
                 (set self.vely (* self.MAX_VEL vely))
