@@ -1,5 +1,23 @@
 (local world (require :world))
 
+
+(local objects
+  (let [
+      tbl []
+      Mod (require :src.creature)
+      ]
+    (for [i 1 10]
+      (tset tbl i (Mod.Creature.new :ant 500 500))
+    )
+    tbl
+  )
+)
+
+(fn love.load []
+  (world:setobjects objects)
+)
+
+
 (fn love.draw []
   (love.graphics.clear)
   (world:draw)

@@ -16,32 +16,25 @@
   )
 )
 
-;; For now, a rainbow grid
-(local objects
-  (let [tbl []]
-    (for [y 10 4000 100]
-      (for [x 10 4000 100]
-        (tset tbl (+ (length tbl) 1) [x y (hsv (/ y 4000.0) (/ x 4000) 1.0)])))
-    tbl
-  )
-)
-
-
 (fn draw [self]
   (let [(px py) (unpack self.pos)
         (lx ly) (unpack [(+ px screen-width) (+ py screen-height)])]
-    (each [_ pt (ipairs objects)]
-      (let [[x y col] pt]
-        (when (and (<= px x) (<= x lx) (<= py y) (<= y ly))
-          (love.graphics.setColor (unpack col))
-          (love.graphics.rectangle "fill" (- (- x px) 5) (- (- y py) 5) 10 10)
-        )
+    (each [_ obj (ipairs self.objects)]
+      (when (and (<= px obj.x) (<= obj.x lx) (<= py obj.y) (<= obj.y ly))
+        (obj:draw px py)
       )
     )
   )
 )
 
 (fn update [self dt]
+  (each [_ obj (ipairs self.objects)]
+    (obj:update dt)
+  )
+)
+
+(fn setobjects [self objects]
+  (set self.objects objects)
 )
 
 (fn move [self delta]
@@ -61,7 +54,10 @@
 {
     :limits [4000 4000]
     :pos [0 0]
+    :objects []
+
     :draw draw
     :update update
     :move move
+    :setobjects setobjects
 }

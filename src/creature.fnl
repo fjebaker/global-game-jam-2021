@@ -23,13 +23,13 @@
 
 (fn new [creeptype x y]
     (let [
-            Mod (require (.. "src.creeps." creeptype))
+            Creep (require (.. "src.creeps." creeptype))
             instance {}
         ]
         (each [key default (pairs _G.Creature)]
             ; check if default override
-            (if (. Mod.Creep key)
-                (tset instance key (. Mod.Creep key))
+            (if (. Creep key)
+                (tset instance key (. Creep key))
                 ; else
                 (tset instance key default)
             )
@@ -77,12 +77,12 @@
     )
 )
 
-(fn draw [self]
+(fn draw [self px py]
     (love.graphics.setColor 255 0 0 255)
 
     (love.graphics.draw 
         self.image 
-        self.x self.y 
+        (- self.x px) (- self.y py)
         self.rotation
         1 1 
         self.X_MID self.Y_MID
