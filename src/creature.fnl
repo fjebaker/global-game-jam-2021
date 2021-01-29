@@ -10,12 +10,21 @@
     ; returns normalized random direction vector
     (let [theta (/ (math.random 0 360) (* 2 math.pi))]
         [
+            theta
             ; xvel
             (math.sin theta)
             ; yvel
             (math.cos theta)
         ]
     )
+)
+
+
+(fn reorient [self]
+    ; TODO needs offset for size of the image it needs to rotate
+    (love.graphics.translate self.x self.y)
+    (love.graphics.rotate (- self.rotation (/ math.pi 2)))
+    (love.graphics.translate (- self.x) (- self.y))
 )
 
 ; CONSTRUCTOR
@@ -34,9 +43,9 @@
             )
         )
 
-        (tset instance :x x)
-        (tset instance :y y)
-        
+        (set instance.x x)
+        (set instance.y y)
+
         instance
     )
 )
@@ -53,8 +62,8 @@
             (set self.integrator 0)
 
             ; choose new direction
-            (let [[velx vely] (getranddir)]
-                (print "New Direction" velx vely)
+            (let [[theta velx vely] (getranddir)]
+                (set self.rotation theta)
                 (set self.velx (* self.MAX_VEL velx))
                 (set self.vely (* self.MAX_VEL vely))
             )
@@ -68,6 +77,7 @@
 
 (fn draw [self]
     (love.graphics.setColor 255 0 0 255)
+    (reorient self)
     (love.graphics.rectangle "fill" self.x self.y 20 20)   
 )
 
@@ -78,6 +88,7 @@
     :y 100
     :velx 1
     :vely 1
+    :rotation 0
     
     :health 0
 
