@@ -11,7 +11,7 @@
 (var hud nil)
 
 ;SETTING FONT
-(var font (love.graphics.newFont "assets/fonts/AgreementSignature-qZX6x.ttf" 50))
+(var font (love.graphics.newFont "assets/fonts/AgreementSignature-qZX6x.ttf" 40))
 (love.graphics.setFont font)
 
 ; LÖVE Hooks
