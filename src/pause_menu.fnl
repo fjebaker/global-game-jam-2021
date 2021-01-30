@@ -103,9 +103,9 @@
                 (var ret nil)
 
                 ; indent
-                (if (and (= b (- by 5)) (= a0 (- bx 5)))
+                (if (= b (- by 5))
                     (do
-                        (set ret (+ bx 25))
+                        (set ret (+ a0 25))
                     )
                 
                 ; unindex
@@ -114,10 +114,8 @@
                     )
                 )
 
-                ;set new x pos
-                (table.remove button 3)
-                (table.insert button 3 ret)           
-                
+                (tset (. buttons i) 3 ret)
+                        
             )
         )
     )
