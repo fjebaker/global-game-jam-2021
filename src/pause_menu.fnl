@@ -49,7 +49,7 @@
 
     (let [[a b] pos]
     
-        (love.graphics.draw (love.graphics.newImage "background.png") 0 0)
+        (love.graphics.draw (love.graphics.newImage "assets/background.png") 0 0)
 
         (love.graphics.print "K A F K A - Pause Menu." 100 50)
 
