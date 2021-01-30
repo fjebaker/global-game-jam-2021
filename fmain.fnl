@@ -1,5 +1,7 @@
 (local utils (require :src.utils))
-(local pm (require :src.pause_menu))
+(local audio (require :src.audio))
+
+(local pausemenu (require :src.pause_menu))
 
 ; State
 (var world nil)
@@ -28,6 +30,7 @@
             tbl
         )
     )
+    (audio.playsongloop)
 )
 
 
@@ -42,7 +45,7 @@
     )
     (if (= state.current "PAUSE")
         (do
-            (pm:draw)
+            (pausemenu:draw)
         )
     )
 )
@@ -75,7 +78,7 @@
         ; Paused state
         (= state.current "PAUSE")
         (do
-            (pm:update)
+            (pausemenu:update)
             (when (love.keyboard.isDown "escape")
                 (set state.current "IN-GAME")
             )
