@@ -22,6 +22,12 @@
 )
 (addButton "Stay Asleep."  quit_funct)
 
+(fn git_funct []
+    (print "git")
+    (love.system.openURL "https://www.youtube.com/watch?v=ukaa9sXbTfw")
+)
+"https://github.com/dustpancake/global-game-jam-2021"
+(addButton "GitHub." git_funct)
 ;assign button positions
 
 (let [[a0 b0] starting_pos]
