@@ -5,6 +5,40 @@
 (local half-width (/ screen-width 2))
 (local half-height (/ screen-height 2))
 
+(fn newfloortexture [instance coords]
+    (let [
+        mesh (love.graphics.newMesh coords)
+        graphic (love.graphics.newImage instance.floor_texture)
+    ]
+        (graphic:setWrap :repeat :repeat)
+        (mesh:setTexture graphic)
+
+        (tset instance :floormesh mesh)
+    )
+)
+
+(fn newmap [instance]
+    ; calculate new map vertices
+    (let [
+        mapcoords []
+        (width height) (unpack instance.limits)
+        s (. instance :floor-texture-scale)
+        ]
+        (table.insert mapcoords [0 0            0 0])
+        (table.insert mapcoords [width 0        s 0])
+        (table.insert mapcoords [width height   s s])
+        (table.insert mapcoords [0 height       0 s])
+
+        ; assign textures to instance
+        (newfloortexture instance mapcoords)
+    )
+)
+
+(fn drawmap [self]
+    (love.graphics.draw self.floormesh (- screen-width self.x) (- screen-height self.y))
+)
+
+; RENDERING
 
 (fn draw [self objects]
     (let [(ox oy) (unpack [(- self.x half-width) (- self.y half-height)])
@@ -19,6 +53,15 @@
     )
 )
 
+
+(fn update [self dt]
+    (self.physics:update dt)
+)
+
+
+; MOTION
+
+
 (fn move [self delta]
     "Move the world's origin by some delta"
     (let [(dx dy) (unpack delta)
@@ -31,11 +74,6 @@
     )
 )
 
-(fn update [self dt]
-    (self.physics:update dt)
-)
-
-
 ; INTERFACE
 (local World {
     :limits [4000 4000]
@@ -45,13 +83,26 @@
     :physics nil
 
     :draw draw
+    :drawmap drawmap
     :update update
     :move move
+
+    ; MAP IMAGES
+    :floor_texture "assets/floortile.png"
+    :wall_texture ""
+    :floor-texture-scale 20
+    :wall-texture-scale 1
+
+    ; MESHES
+    :floormesh nil
+    :wallmesh nil
 })
 
 ; CONSTRUCTOR
 (fn new [x y]
     (let [instance (utils.tcopy World)]
+        ; Meshing and map
+        (newmap instance)
         ; World position
         (set instance.x x)
         (set instance.y y)

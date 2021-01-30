@@ -31,6 +31,7 @@
 
 (fn love.draw []
     (love.graphics.clear)
+    (world:drawmap)
     (world:draw creatures)
     (world:draw objects)
 )
