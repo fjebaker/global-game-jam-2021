@@ -5,5 +5,5 @@ function love.conf(t)
     t.window.height = 768
 
     t.modules.joystick = false
-    t.modules.physics = false
+    t.modules.physics = true
 end

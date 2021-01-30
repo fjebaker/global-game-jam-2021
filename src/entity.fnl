@@ -7,59 +7,63 @@
 
 (fn draw [self ox oy]
     "Draw the entity relative to the origin (ox, oy)"
-    (love.graphics.draw
-        self.image
-        (- self.x ox) (- self.y oy)
-        self.rotation
-        1 1
-        self.X_MID self.Y_MID
+    (let [
+            (x y) (self.body:getPosition)
+            rotation (self.body:getAngle)
+        ]
+        (love.graphics.draw
+            self.image
+            (- x ox) (- y oy)
+            rotation
+            1 1
+            self.X_MID self.Y_MID
+        )
     )
+)
+
+(fn position [self]
+    (self.body:getPosition)
 )
 
 (fn update [self dt]
 )
 
-(fn collide [self object]
-)
-
 ; INTERFACE
 
 (local Entity {
-    :x 0
-    :y 0
-    :mass 0
-    :rotation 0
-    :health 0
+    ; PHYSICS
+    :body nil
+    :shape nil
+    :fixture nil
 
     ; IMAGE VALS
-    :image "assets/heart.jpg"
+    :image "assets/beetle.png"
     :X_MID 0
     :Y_MID 0
 
     ; PROPERTIES
-    :collidable false
+    :health 0
     :draggable false
     :edible false
     :attackable false
 
-    ; GEOMETRY
-    :hitbox {}
-    :collide collide
-
     :draw draw
+    :position position
     :update update
 })
 
 ; CONSTRUCTOR
 
-(fn new [objtype x y]
+(fn new [objtype x y physicsworld]
     (let [instance (utils.tcopy Entity)]
 
         ; load image from path
         (utils.tloadimage instance 50 50)
 
-        (set instance.x x)
-        (set instance.y y)
+        ; Init the physics state for the entity
+        (set instance.body (love.physics.newBody physicsworld x y :static))
+        (set instance.shape (love.physics.newRectangleShape 100 100))
+        (set instance.fixture (love.physics.newFixture instance.body instance.shape))
 
         instance
     )
