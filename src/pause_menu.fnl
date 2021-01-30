@@ -45,11 +45,11 @@
     )
 )
 
-(fn love.draw []
+(fn draw []
 
     (let [[a b] pos]
     
-        (love.graphics.draw (love.graphics.newImage "assets/background.png") 0 0)
+        (love.graphics.draw (love.graphics.newImage "assets/pause_menu_bg.png") 0 0)
 
         (love.graphics.print "K A F K A - Pause Menu." 100 50)
 
@@ -71,7 +71,7 @@
     
 )
 
-(fn love.update [dt]
+(fn update [dt]
 
     (let [[a b] pos]
     (let [[a0 b0] starting_pos]
@@ -80,7 +80,6 @@
         (var min_pos b0)
     
         (when (love.keyboard.isDown "down")
-
 
             (if (<= (+ b button_spacing) max_pos)
                 (set pos [a (+ b button_spacing)])
@@ -98,17 +97,32 @@
         (for [i 1 (length buttons)]
             (let [button (. buttons i)]
 
-                (var bx       (. button 3))
+                (local bx     (. button 3))
                 (var by       (. button 4))
+
+                (love.graphics.print bx 200 200)
             
-                (if (= b (- by 5))
-                    (do
+                (when (and (= b (- by 5)) (= a0 (- bx 20)))
+                    
                         (table.remove button 3)
-                        (table.insert button 3 (+ bx 20))
-                    )
+                        (table.insert button 3 a0)
+                    
                 )
+                (when (and (= b (- by 5)) (= a0 (- bx 5)))
+                    
+                        (table.remove button 3)
+                        (table.insert button 3 (+ bx 25))
+                    
+                )
+                
             )
         )
     )
     )
 )
+
+
+{
+    :draw draw
+    :update update
+}

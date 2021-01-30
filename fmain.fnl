@@ -1,8 +1,10 @@
 (local utils (require :src.utils))
+(local pm (require :src.pause_menu))
 
 ; State
 (var world nil)
 (var objects [])
+(var state (require :src.state))
 
 
 ; LÖVE Hooks
@@ -28,25 +30,56 @@
     )
 )
 
+
 (fn love.draw []
     (love.graphics.clear)
-    (world:drawmap)
-    (world:draw objects)
+    (if (= state.current "IN-GAME")
+        (do
+            (love.graphics.clear)
+            (world:drawmap)
+            (world:draw objects)
+        )
+    )
+    (if (= state.current "PAUSE")
+        (do
+            (pm:draw)
+        )
+    )
 )
 
 (fn love.update [dt]
-    ; do input
-    (when (love.keyboard.isDown "down")
-        (world:move [0 5])
-    )
-    (when (love.keyboard.isDown "up")
-        (world:move [0 -5])
-    )
-    (when (love.keyboard.isDown "right")
-        (world:move [5 0])
-    )
-    (when (love.keyboard.isDown "left")
-        (world:move [-5 0])
+
+    ;check state then check inputs
+    
+    (if
+        ; Game state
+        (= state.current "IN-GAME")
+        (do
+            ; do input
+            (when (love.keyboard.isDown "down")
+                (world:move [0 5])
+            )
+            (when (love.keyboard.isDown "up")
+                (world:move [0 -5])
+            )
+            (when (love.keyboard.isDown "right")
+                (world:move [5 0])
+            )
+            (when (love.keyboard.isDown "left")
+                (world:move [-5 0])
+            )
+            (when (love.keyboard.isDown "escape")
+                (set state.current "PAUSE")
+            )
+        )
+        ; Paused state
+        (= state.current "PAUSE")
+        (do
+            (pm:update)
+            (when (love.keyboard.isDown "escape")
+                (set state.current "IN-GAME")
+            )
+        )    
     )
 
     ; update
