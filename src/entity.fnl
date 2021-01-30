@@ -11,6 +11,7 @@
             (x y) (self.body:getPosition)
             rotation (self.body:getAngle)
         ]
+        (love.graphics.setColor (unpack self.tint)) ; set custom tint
         (love.graphics.draw
             self.image
             (- x ox) (- y oy)
@@ -18,6 +19,7 @@
             1 1
             self.X_MID self.Y_MID
         )
+        (love.graphics.setColor 255 255 255 255) ; unset colour 
     )
 )
 
@@ -35,6 +37,7 @@
     :body nil
     :shape nil
     :fixture nil
+    :tint [255 255 255 255]
 
     ; IMAGE VALS
     :image "assets/beetle.png"
