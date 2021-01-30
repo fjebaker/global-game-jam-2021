@@ -5,11 +5,11 @@
 
 ; METHODS
 
-(fn draw [self px py]
-    ; (love.graphics.setColor 255 255 255 255)
+(fn draw [self ox oy]
+    "Draw the entity relative to the origin (ox, oy)"
     (love.graphics.draw
         self.image
-        (- self.x px) (- self.y py)
+        (- self.x ox) (- self.y oy)
         self.rotation
         1 1
         self.X_MID self.Y_MID
