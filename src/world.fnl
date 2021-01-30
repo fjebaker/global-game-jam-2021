@@ -10,8 +10,10 @@
     (let [(ox oy) (unpack [(- self.x half-width) (- self.y half-height)])
           (lx ly) (unpack [(+ ox screen-width) (+ oy screen-height)])]
         (each [_ obj (ipairs objects)]
-            (when (and (<= ox obj.x) (<= obj.x lx) (<= oy obj.y) (<= obj.y ly))
-                (obj:draw ox oy)
+            (let [(x y) (obj:position)]
+                (when (and (<= ox x) (<= x lx) (<= oy y) (<= y ly))
+                    (obj:draw ox oy)
+                )
             )
         )
     )
@@ -30,6 +32,7 @@
 )
 
 (fn update [self dt]
+    (self.physics:update dt)
 )
 
 
@@ -39,6 +42,8 @@
     :x 0
     :y 0
 
+    :physics nil
+
     :draw draw
     :update update
     :move move
@@ -47,8 +52,11 @@
 ; CONSTRUCTOR
 (fn new [x y]
     (let [instance (utils.tcopy World)]
+        ; World position
         (set instance.x x)
         (set instance.y y)
+        ; New physics world with no gravity and sleepable bodies
+        (set instance.physics (love.physics.newWorld 0 0 true))
         instance
     )
 )
