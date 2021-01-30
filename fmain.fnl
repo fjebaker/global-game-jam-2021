@@ -62,24 +62,24 @@
         )
     )
     ;check state then check inputs
-    (if (clock:expired)
-        (if
-            ; Home screen
-            (= state.current "HOME")
-            (do
-                (startmenu.update dt)
-            )
-            ; Paused state
-            (= state.current "PAUSE")
-            (do
-                (pausemenu.update dt)
+    (if
+        ; Home screen
+        (= state.current "HOME")
+        (do
+            (startmenu.update dt)
+        )
+        ; Paused state
+        (= state.current "PAUSE")
+        (do
+            (pausemenu.update dt)
+            (if (clock:expired)
                 (when (love.keyboard.isDown "escape")
                     (clock:reset)
                     (set state.current "IN-GAME")
                 )
             )
-
         )
+
         ; Game state
         (= state.current "IN-GAME")
         (do 
@@ -92,5 +92,6 @@
 
             )
         )
+
     )
 )
