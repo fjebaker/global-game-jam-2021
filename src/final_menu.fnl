@@ -12,7 +12,7 @@
 ;make buttons
 (fn but_funct []
     (var state (require :src.state))
-    (set state.current "IN-GAME")
+    (set state.current "HOME")
 )
 (addButton "Back to Menu" but_funct)
 
@@ -38,7 +38,7 @@
 
         (love.graphics.print "Kafkaesque - Fin." 100 50)
 
-        ;(love.graphics.rectangle "line" a b 150 button_spacing)
+        (love.graphics.rectangle "line" a b 150 button_spacing)
 
         (for [i 1 (length buttons)]
             (let [button (. buttons i)]
@@ -84,6 +84,7 @@
         (if (clock:expired)
             (do
                 (when (love.keyboard.isDown "return")
+                    (love.graphics.print "DEBUG" 400 400)
                     (clock:reset)
                     ;find relative functoin and call it
 
