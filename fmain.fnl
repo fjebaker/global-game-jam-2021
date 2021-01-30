@@ -1,4 +1,5 @@
 (local utils (require :src.utils))
+(local audio (require :src.audio))
 
 ; State
 (var world nil)
@@ -26,6 +27,7 @@
             tbl
         )
     )
+    (audio.playsongloop)
 )
 
 (fn love.draw []
