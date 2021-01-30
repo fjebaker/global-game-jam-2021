@@ -88,9 +88,9 @@
     :move move
 
     ; MAP IMAGES
-    :floor_texture "assets/blanktex.jpg"
+    :floor_texture "assets/floortile.png"
     :wall_texture ""
-    :floor-texture-scale 50
+    :floor-texture-scale 20
     :wall-texture-scale 1
 
     ; MESHES
