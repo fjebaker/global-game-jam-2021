@@ -54,22 +54,17 @@
 
 ; CONSTRUCTOR
 
-(fn new [objtype x y physicsworld]
-    (let [instance (utils.tcopy Entity)]
+(fn new [instance x y physicsworld bodytype]
+    (utils.tadd instance Entity)
+    ; load image from path
+    (utils.tloadimage instance 50 50)
 
-        ; load image from path
-        (utils.tloadimage instance 50 50)
+    ; Init the physics state for the entity
+    (set instance.body (love.physics.newBody physicsworld x y bodytype))
 
-        ; Init the physics state for the entity
-        (set instance.body (love.physics.newBody physicsworld x y :static))
-        (set instance.shape (love.physics.newRectangleShape 100 100))
-        (set instance.fixture (love.physics.newFixture instance.body instance.shape))
-
-        instance
-    )
+    instance
 )
 
 
 ; MODULE EXPORTS
-
-{:new new :Entity Entity}
+{:new new}
