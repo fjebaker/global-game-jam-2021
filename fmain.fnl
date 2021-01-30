@@ -2,7 +2,6 @@
 
 ; State
 (var world nil)
-(var creatures [])
 (var objects [])
 
 
@@ -14,15 +13,15 @@
         )
     )
     (set objects
-        (let [Entity (require :src.entity)]
-            [(Entity.new :heart 2000 2000 world.physics)]
-        )
-    )
-    (set creatures
-        (let [tbl []
-            Creature (require :src.creature)]
+        (let [
+                Creature (require :src.creature)
+                Hero (require :src.hero)
+                tbl []
+            ]
+            (tset tbl 1 (Hero.new 2000 2000 world))
             (for [i 1 10]
-                (tset tbl i (Creature.new :ant (+ 1800 (* i 50)) (+ 1800 (* i 50)) world.physics))
+                (tset tbl (+ 1 (length tbl))
+                    (Creature.new :ant (+ 1800 (* i 50)) (+ 1800 (* i 50)) world.physics))
             )
             tbl
         )
@@ -31,7 +30,7 @@
 
 (fn love.draw []
     (love.graphics.clear)
-    (world:draw creatures)
+    (world:drawmap)
     (world:draw objects)
 )
 
@@ -52,6 +51,5 @@
 
     ; update
     (world:update dt)
-    (utils.tmapupdate creatures dt)
     (utils.tmapupdate objects dt)
 )
