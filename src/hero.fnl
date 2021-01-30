@@ -40,6 +40,13 @@
     )
 )
 
+
+(fn starving [self dt]
+    ; applies starve mechanic and returns bool for less than 0
+    (set self.hunger (- self.hunger (* self.S_RATE dt)))
+    (< self.hunger 0)
+)
+
 ; INTERFACE
 
 (local Hero {
@@ -48,6 +55,13 @@
     ; PHYSICS QUANTS
     :mass 0.02
     :damping 2
+
+    ; STATS
+    :hunger 75
+
+    ; STARVE MECHANICS
+    :S_RATE 5   ; starve rate in amount per second
+    :starving starving
 
     ; IMAGE VALS
     :image "assets/beetle.png"
