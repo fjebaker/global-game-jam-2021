@@ -63,16 +63,16 @@
 (fn new [creeptype x y physicsworld]
     (let [
             Creep (require (.. "src.creeps." creeptype))
-            instance (utils.tcopy Entity.Entity)
+            instance {}
         ]
+        (Entity.new instance x y physicsworld :dynamic)
         (utils.tadd instance Creature)
         (utils.tmerge instance Creep)
 
         ; load image from path
         (utils.tloadimage instance 110 125)
 
-        ; Init the physics state for the entity
-        (set instance.body (love.physics.newBody physicsworld x y :dynamic))
+        ; Set up character physics
         (set instance.shape (love.physics.newRectangleShape 220 250))
         (set instance.fixture (love.physics.newFixture instance.body instance.shape))
         (instance.body:setAwake true)
