@@ -54,9 +54,9 @@
 
 
 {
-    :tcopy tcopy 
-    :tmerge tmerge 
-    :tadd tadd 
+    :tcopy tcopy
+    :tmerge tmerge
+    :tadd tadd
     :tloadimage tloadimage
     :tmap tmap
     :tmapupdate tmapupdate

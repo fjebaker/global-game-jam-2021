@@ -19,7 +19,7 @@
     ; normalizes the vector [x, y]
     (let [magnitude (l2dist x y)]
         [
-            (/ x magnitude) 
+            (/ x magnitude)
             (/ y magnitude)
         ]
     )
@@ -27,7 +27,7 @@
 
 {
     :l1dist l1dist
-    :l2dist l2dist 
+    :l2dist l2dist
     :normalize normalize
-    :dot dot 
+    :dot dot
 }

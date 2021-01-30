@@ -12,7 +12,7 @@
 (local HitBox {
     :radius 0        ; used as a far-field estimate for collisions
                      ; and for whether to use a finer calculation
-    
+
     :pointin pointin ; whether point x, y is within the hitbox
 })
 
