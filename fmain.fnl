@@ -8,6 +8,7 @@
 (var world nil)
 (var objects [])
 (var state (require :src.state))
+(var hud nil)
 
 
 ; LÖVE Hooks
@@ -39,6 +40,9 @@
             tbl
         )
     )
+    (set hud let [HUD (require :src.hud)]
+        (HUD.new (. objects 1)) ; pass hero to HUD
+    )
     (audio.playsongloop)
 )
 
@@ -49,6 +53,7 @@
             (love.graphics.clear)
             (world:drawmap)
             (world:draw objects)
+            (hud:draw (. objects 1)) ; pass hero to HUD
         )
     )
     (if (= state.current "PAUSE")
