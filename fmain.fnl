@@ -4,11 +4,11 @@
 (local startmenu (require :src.start_menu))
 (local pausemenu (require :src.pause_menu))
 
+(local Kafkaesque (require :src.Kafkaesque))
+
 ; State
-(var world nil)
-(var objects [])
 (var state (require :src.state))
-(var hud nil)
+(var game nil)
 
 ;SETTING FONT
 (var font (love.graphics.newFont "assets/fonts/AgreementSignature-qZX6x.ttf" 40))
@@ -16,46 +16,14 @@
 
 ; LÖVE Hooks
 (fn love.load []
-    (set world
-        (let [World (require :src.world)]
-            (World.new 2000 2000)
-        )
-    )
-    (set objects
-        (let [
-                Creature (require :src.creature)
-                Food (require :src.food)
-                Hero (require :src.hero)
-                tbl []
-            ]
-            (tset tbl 1 (Hero.new 2000 2000 world))
-            (for [i 1 10]
-                (do
-                    (tset tbl (+ 1 (length tbl))
-                        (Creature.new :ant (+ 1800 (* i 50)) (+ 1800 (* i 50)) world.physics)
-                    )
-
-                    (tset tbl (+ 1 (length tbl))
-                        (Food.new :flower (math.random 0 3900) (math.random 0 3900) world.physics)
-                    )
-                )
-            )
-            tbl
-        )
-    )
-    (set hud (require :src.hud))
     (audio.playsongloop)
 )
 
 (fn love.draw []
     (love.graphics.clear)
     (if (= state.current "IN-GAME")
-        (do
-            (love.graphics.clear)
-            (world:drawmap)
-            (world:draw objects)
-            (hud.draw (. objects 1)) ; pass hero to HUD
-        )
+        ; draw game
+        (game:draw)
     )
     (if (= state.current "PAUSE")
         (do
@@ -70,6 +38,14 @@
 )
 
 (fn love.update [dt]
+    ;check when to start game
+    (if (= state.current "RESET")
+        (do 
+            (set game (Kafkaesque.newgame))
+            (set state.current "IN-GAME")
+        )
+    )
+
     ;check state then check inputs
     (if
         ; Home screen
@@ -91,13 +67,10 @@
         ; Game state
         (= state.current "IN-GAME")
         (do 
-            (let [hero (. objects 1)]
-                (if (hero:starving dt)
-                    (set state.current "PAUSE")
-                )
-            )
-            (world:update dt)
-            (utils.tmapupdate objects dt)
+            ; update game
+            (game:update dt)
+
+
             (when (love.keyboard.isDown "escape")
                 (set state.current "PAUSE")
             )

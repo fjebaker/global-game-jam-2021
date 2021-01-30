@@ -12,7 +12,7 @@
 ;make buttons
 (fn play_funct []
     (var state (require :src.state))
-    (set state.current "IN-GAME")
+    (set state.current "RESET")
 )
 (addButton "Wake Up." play_funct)
 
