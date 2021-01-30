@@ -19,13 +19,21 @@
     (set objects
         (let [
                 Creature (require :src.creature)
+                Food (require :src.food)
                 Hero (require :src.hero)
                 tbl []
             ]
             (tset tbl 1 (Hero.new 2000 2000 world))
             (for [i 1 10]
-                (tset tbl (+ 1 (length tbl))
-                    (Creature.new :ant (+ 1800 (* i 50)) (+ 1800 (* i 50)) world.physics))
+                (do
+                    (tset tbl (+ 1 (length tbl))
+                        (Creature.new :ant (+ 1800 (* i 50)) (+ 1800 (* i 50)) world.physics)
+                    )
+
+                    (tset tbl (+ 1 (length tbl))
+                        (Food.new :flower (math.random 0 3900) (math.random 0 3900) world.physics)
+                    )
+                )
             )
             tbl
         )
