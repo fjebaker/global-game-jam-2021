@@ -1,6 +1,6 @@
-(var starting_pos [95 95])
+(var starting_pos [95 200])
 (var pos starting_pos)
-(var button_spacing 25)
+(var button_spacing 50)
 
 ; make empty table of buttons
 (local buttons []) 
@@ -14,7 +14,7 @@
     (var state (require :src.state))
     (set state.current "IN-GAME")
 )
-(addButton "Resume" play_funct)
+(addButton "Resume..." play_funct)
 
 ;(fn settings_funct []
 ;    (print "settings")
@@ -30,7 +30,7 @@
     (var state (require :src.state))
     (set state.current "HOME")
 )
-(addButton "Quit"  quit_funct)
+(addButton "Quit."  quit_funct)
 
 ;assign button positions
 
@@ -115,7 +115,7 @@
                     (clock:reset)
                     ;find relative functoin and call it
 
-                    (var button_index (+ (/ (- b b0) 25) 1))
+                    (var button_index (+ (/ (- b b0) button_spacing) 1))
                     (let [button (. buttons button_index )]
                         (var function (. button 2))
                         (function)
