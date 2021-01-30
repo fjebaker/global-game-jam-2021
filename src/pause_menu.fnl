@@ -72,25 +72,44 @@
     
 )
 
+(local clock {
+    :integrator 0
+    :delay 0.1 ; button delay
+
+    :reset (fn reset [self] 
+        (set self.integrator 0)
+    )
+    :expired (fn expired [self] 
+        (> self.integrator self.delay)
+    )
+    :add (fn add [self dt] 
+        (set self.integrator (+ self.integrator dt))
+    )
+})
+
 (fn update [dt]
+    (clock:add dt)
 
     (let [[a b] pos]
     (let [[a0 b0] starting_pos]
 
         (var max_pos  ( + b0 (* button_spacing (- (length buttons) 1))))
         (var min_pos b0)
-    
-        (when (love.keyboard.isDown "down")
-
-            (if (<= (+ b button_spacing) max_pos)
-                (set pos [a (+ b button_spacing)])
-            )
-        )
-
-        (when (love.keyboard.isDown "up")
-
-            (if (>= (- b button_spacing) min_pos)
-                (set pos [a (- b button_spacing)])
+        
+        (if (clock:expired)
+            (do
+                (when (love.keyboard.isDown "down")
+                    (clock:reset)
+                    (if (<= (+ b button_spacing) max_pos)
+                        (set pos [a (+ b button_spacing)])
+                    )
+                )
+                (when (love.keyboard.isDown "up")
+                    (clock:reset)
+                    (if (>= (- b button_spacing) min_pos)
+                        (set pos [a (- b button_spacing)])
+                    )
+                )
             )
         )
 

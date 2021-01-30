@@ -51,7 +51,6 @@
 )
 
 (fn love.update [dt]
-
     ;check state then check inputs
     
     (if
@@ -78,7 +77,7 @@
         ; Paused state
         (= state.current "PAUSE")
         (do
-            (pausemenu:update)
+            (pausemenu.update dt)
             (when (love.keyboard.isDown "escape")
                 (set state.current "IN-GAME")
             )
