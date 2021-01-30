@@ -1,6 +1,7 @@
 (local world (require :world))
 (local collisions (require :src.collisions))
 (local utils (require :src.utils))
+(local geo (require :src.geometry))
 
 (local creatures 
   (let [
@@ -8,7 +9,7 @@
       Creature (require :src.creature)
       ]
     (for [i 1 10]
-      (tset tbl i (Creature.new :ant 500 500))
+      (tset tbl i (Creature.new :ant (* i 100) (* i 100)))
     )
     tbl
   )
@@ -22,13 +23,13 @@
 
 
 (fn love.load []
-
 )
 
 
 (fn love.draw []
   (love.graphics.clear)
   (world:draw creatures)
+  (world:draw objects)
 )
 
 (fn love.update [dt]
@@ -49,10 +50,11 @@
 
 
   ; do collisions
-
+  (collisions.checkcollisions nil creatures objects)
 
 
   ; update
   (world:update dt)
   (utils.tmapupdate creatures dt)
+  (utils.tmapupdate objects dt)
 )
