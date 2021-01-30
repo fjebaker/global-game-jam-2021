@@ -46,6 +46,10 @@
     )
 )
 
+(fn collide [self object]
+
+)
+
 ; INTERFACE
 
 (local Creature {
@@ -62,6 +66,8 @@
 
     ; OVERRIDES 
     :update update
+    :collide collide
+
 })
 
 

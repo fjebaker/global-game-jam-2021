@@ -17,6 +17,10 @@
 )
 
 (fn update [self dt]
+    
+)
+
+(fn collide [self object]
 
 )
 
@@ -36,12 +40,13 @@
 
     ; PROPERTIES
 
-    :collide false
+    :collidable false
     :draggable false
     :edible false
 
     ; GEOMETRY
     :hitbox nil
+    :collide collide
 
     :draw draw
     :update update

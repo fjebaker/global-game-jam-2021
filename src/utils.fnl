@@ -38,9 +38,26 @@
     )
 )
 
+(fn tmap [func arr]
+    ; maps function func onto each element in arr
+    (each [_ obj (ipairs arr)]
+        (func obj)
+    )
+)
+
+(fn tmapupdate [arr dt]
+    ; calls update of each element in arr with dt
+    (each [_ obj (ipairs arr)]
+        (obj:update dt)
+    )
+)
+
+
 {
     :tcopy tcopy 
     :tmerge tmerge 
     :tadd tadd 
     :tloadimage tloadimage
+    :tmap tmap
+    :tmapupdate tmapupdate
 }

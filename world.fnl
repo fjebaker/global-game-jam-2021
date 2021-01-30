@@ -16,10 +16,10 @@
   )
 )
 
-(fn draw [self]
+(fn draw [self objects]
   (let [(px py) (unpack self.pos)
         (lx ly) (unpack [(+ px screen-width) (+ py screen-height)])]
-    (each [_ obj (ipairs self.objects)]
+    (each [_ obj (ipairs objects)]
       (when (and (<= px obj.x) (<= obj.x lx) (<= py obj.y) (<= obj.y ly))
         (obj:draw px py)
       )
@@ -28,14 +28,9 @@
 )
 
 (fn update [self dt]
-  (each [_ obj (ipairs self.objects)]
-    (obj:update dt)
-  )
+
 )
 
-(fn setobjects [self objects]
-  (set self.objects objects)
-)
 
 (fn move [self delta]
   "Move the world's origin by some delta"
@@ -54,10 +49,8 @@
 {
     :limits [4000 4000]
     :pos [0 0]
-    :objects []
 
     :draw draw
     :update update
     :move move
-    :setobjects setobjects
 }
