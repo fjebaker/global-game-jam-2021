@@ -8,9 +8,10 @@
 (var world nil)
 (var objects [])
 (var state (require :src.state))
+(var hud nil)
 
 ;SETTING FONT
-(var font (love.graphics.newFont "assets/fonts/AgreementSignature-qZX6x.ttf" 50))
+(var font (love.graphics.newFont "assets/fonts/AgreementSignature-qZX6x.ttf" 40))
 (love.graphics.setFont font)
 
 ; LÖVE Hooks
@@ -42,6 +43,7 @@
             tbl
         )
     )
+    (set hud (require :src.hud))
     (audio.playsongloop)
 )
 
@@ -52,6 +54,7 @@
             (love.graphics.clear)
             (world:drawmap)
             (world:draw objects)
+            (hud.draw (. objects 1)) ; pass hero to HUD
         )
     )
     (if (= state.current "PAUSE")
@@ -87,7 +90,12 @@
         )
         ; Game state
         (= state.current "IN-GAME")
-        (do
+        (do 
+            (let [hero (. objects 1)]
+                (if (hero:starving dt)
+                    (set state.current "PAUSE")
+                )
+            )
             (world:update dt)
             (utils.tmapupdate objects dt)
             (when (love.keyboard.isDown "escape")
