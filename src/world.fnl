@@ -45,7 +45,7 @@
           (lx ly) (unpack [(+ ox screen-width) (+ oy screen-height)])]
         (each [_ obj (ipairs objects)]
             (let [(x y) (obj:position)]
-                (when (and (<= ox x) (<= x lx) (<= oy y) (<= y ly))
+                (when (and (<= ox (+ x 100)) (<= (- x 100) lx) (<= oy (+ y 100)) (<= (- y 100) ly))
                     (obj:draw ox oy)
                 )
             )
