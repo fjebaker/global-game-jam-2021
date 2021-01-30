@@ -12,6 +12,6 @@
     :MIN_CLOCK 100
     :MAX_VEL 50
 
-    :image "assets/ant.jpg"
+    :image "assets/ant.png"
     :hitbox hitbox
 }

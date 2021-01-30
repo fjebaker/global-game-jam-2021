@@ -102,7 +102,7 @@
         (utils.tmerge instance Creep)
 
         ; load image from path
-        (utils.tloadimage instance 30 45)
+        (utils.tloadimage instance 110 125)
 
         (set instance.x x)
         (set instance.y y)
