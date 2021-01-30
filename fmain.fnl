@@ -40,9 +40,7 @@
             tbl
         )
     )
-    (set hud let [HUD (require :src.hud)]
-        (HUD.new (. objects 1)) ; pass hero to HUD
-    )
+    (set hud (require :src.hud))
     (audio.playsongloop)
 )
 
@@ -53,7 +51,7 @@
             (love.graphics.clear)
             (world:drawmap)
             (world:draw objects)
-            (hud:draw (. objects 1)) ; pass hero to HUD
+            (hud.draw (. objects 1)) ; pass hero to HUD
         )
     )
     (if (= state.current "PAUSE")

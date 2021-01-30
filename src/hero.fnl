@@ -45,6 +45,9 @@
     :mass 0.02
     :damping 2
 
+    ; STATS
+    :hunger 75
+
     ; IMAGE VALS
     :image "assets/beetle.png"
     :X_MID 137
