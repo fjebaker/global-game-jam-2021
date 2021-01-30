@@ -68,26 +68,13 @@
 
 (fn love.update [dt]
     ;check state then check inputs
-    
     (if
-        ; Game state
-        (= state.current "IN-GAME")
+        ; Home screen
+        (= state.current "HOME")
         (do
-            ; do input
-            (when (love.keyboard.isDown "down")
-                (world:move [0 5])
-            )
-            (when (love.keyboard.isDown "up")
-                (world:move [0 -5])
-            )
-            (when (love.keyboard.isDown "right")
-                (world:move [5 0])
-            )
-            (when (love.keyboard.isDown "left")
-                (world:move [-5 0])
-            )
+            (startmenu.update dt)
             (when (love.keyboard.isDown "escape")
-                (set state.current "PAUSE")
+                (set state.current "IN-GAME")
             )
         )
         ; Paused state
@@ -97,17 +84,15 @@
             (when (love.keyboard.isDown "escape")
                 (set state.current "IN-GAME")
             )
-        )   
-        (= state.current "HOME")
+        )
+        ; Game state
+        (= state.current "IN-GAME")
         (do
-            (startmenu.update dt)
+            (world:update dt)
+            (utils.tmapupdate objects dt)
             (when (love.keyboard.isDown "escape")
-                (set state.current "IN-GAME")
+                (set state.current "PAUSE")
             )
-        )  
+        )
     )
-
-    ; update
-    (world:update dt)
-    (utils.tmapupdate objects dt)
 )
