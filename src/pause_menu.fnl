@@ -64,6 +64,7 @@
                 (var by       (. button 4))
 
                 (love.graphics.print text bx by)
+                ;(love.graphics.print bx 200 200)
             )   
 
         )
@@ -99,21 +100,23 @@
 
                 (local bx     (. button 3))
                 (var by       (. button 4))
+                (var ret nil)
 
-                (love.graphics.print bx 200 200)
-            
-                (when (and (= b (- by 5)) (= a0 (- bx 20)))
-                    
-                        (table.remove button 3)
-                        (table.insert button 3 a0)
-                    
+                ; indent
+                (if (and (= b (- by 5)) (= a0 (- bx 5)))
+                    (do
+                        (set ret (+ bx 25))
+                    )
+                
+                ; unindex
+                    (do
+                        (set ret (+ a0 5))
+                    )
                 )
-                (when (and (= b (- by 5)) (= a0 (- bx 5)))
-                    
-                        (table.remove button 3)
-                        (table.insert button 3 (+ bx 25))
-                    
-                )
+
+                ;set new x pos
+                (table.remove button 3)
+                (table.insert button 3 ret)           
                 
             )
         )
