@@ -90,10 +90,6 @@
             (= state.current "HOME")
             (do
                 (startmenu.update dt)
-                (when (love.keyboard.isDown "escape")
-                    (clock:reset)
-                    (set state.current "IN-GAME")
-                )
             )
             ; Paused state
             (= state.current "PAUSE")
