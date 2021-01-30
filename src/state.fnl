@@ -3,7 +3,7 @@
 ;state IN-GAME = in game
 ;state PAUSE = pause screen
 
-(var current "IN-GAME")
+(var current "HOME")
 
 {
     :current current

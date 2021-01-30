@@ -11,25 +11,16 @@
 
 ;make buttons
 (fn play_funct []
-    (print "play")
+    (var state (require :src.state))
+    (set state.current "IN-GAME")
 )
-(addButton "Play" play_funct)
-
-(fn settings_funct []
-    (print "settings")
-)
-(addButton "Settings"  settings_funct)
-
-(fn donate_funct []
-    (print "donate")
-)
-(addButton "Donate to the Devs" donate_funct)
+(addButton "Wake Up" play_funct)
 
 (fn quit_funct []
     (print "quit")
     (love.event.quit 0)
 )
-(addButton "Quit"  quit_funct)
+(addButton "Stay Asleep"  quit_funct)
 
 ;assign button positions
 
