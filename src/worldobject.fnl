@@ -31,7 +31,7 @@
     :y 0
     :mass 0
     :rotation 0
-    :health 100
+    :health 0
 
     ; IMAGE VALS
     :image "assets/heart.jpg"
@@ -39,13 +39,13 @@
     :Y_MID 0
 
     ; PROPERTIES
-
     :collidable false
     :draggable false
     :edible false
+    :attackable false
 
     ; GEOMETRY
-    :hitbox nil
+    :hitbox {}
     :collide collide
 
     :draw draw

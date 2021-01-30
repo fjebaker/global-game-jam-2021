@@ -2,6 +2,7 @@
 ; IMPORTS 
 (local utils (require :src.utils))
 (local WorldObject (require :src.worldobject))
+(local geo (require :src.geometry))
 
 ; METHODS
 
@@ -47,7 +48,21 @@
 )
 
 (fn collide [self object]
+    ; collision logic here doesn't work well for non circular shapes
+    ; either dispatch a different method, or TODO
+    (let [
+        dx (- self.x object.x)
+        dy (- self.y object.y)
+        (cx cy) (unpack (geo.normalize dx dy)) ; normed collision vector
+        (vx vy) (unpack (geo.normalize self.velx self.vely)) ; normed velocity vector 
 
+        mag (- (/ (geo.dot cx cy vx vy) 2) 0.5) ; resultant collision effect
+        ]
+        (print dx dy)
+        (print self " :: mag " mag)
+        (set self.velx (* self.velx mag))
+        (set self.vely (* self.vely mag))
+    )
 )
 
 ; INTERFACE
@@ -63,6 +78,11 @@
     :MAX_VEL 10
     :MAX_CLOCK 5000
     :MIN_CLOCK 500
+
+    ; PROPERTY UPDATES
+    :health 100
+    :collidable true
+    :attackable true
 
     ; OVERRIDES 
     :update update
