@@ -41,6 +41,9 @@
 
 (local Creature {
 
+    :mass 0
+    :damping 1
+
     ; MOVEMENT
     :clock 0
     :integrator 0
@@ -75,6 +78,8 @@
         ; Set up character physics
         (set instance.shape (love.physics.newRectangleShape 100 125))
         (set instance.fixture (love.physics.newFixture instance.body instance.shape))
+        (instance.body:setMass instance.mass)
+        (instance.body:setLinearDamping instance.damping)
         (instance.body:setAwake true)
 
         instance
