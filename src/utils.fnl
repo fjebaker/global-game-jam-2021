@@ -10,7 +10,7 @@
 )
 
 (fn tcopy [t]
-    ; deep copy
+    ; shallow copy
     (let [c {}]
         (each [key value (pairs t)]
             (tset c key value)

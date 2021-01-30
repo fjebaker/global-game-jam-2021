@@ -23,6 +23,7 @@
         mapcoords []
         (width height) (unpack instance.limits)
         s (. instance :floor-texture-scale)
+        RoomWindow (require :src.roomwindow)
         ]
         (table.insert mapcoords [0 0            0 0])
         (table.insert mapcoords [width 0        s 0])
@@ -31,6 +32,8 @@
 
         ; assign textures to instance
         (newfloortexture instance mapcoords)
+
+        ; init a window
     )
 )
 
