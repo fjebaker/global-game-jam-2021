@@ -151,4 +151,6 @@
 )
 
 ; MODULE EXPORTS
-{:new new}
+{
+    :new new
+}
