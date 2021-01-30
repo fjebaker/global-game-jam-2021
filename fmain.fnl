@@ -1,17 +1,19 @@
 (local world (require :world))
 
-
 (local objects
   (let [
       tbl []
       Creature (require :src.creature)
+      WorldObj (require :src.worldobject)
       ]
     (for [i 1 10]
       (tset tbl i (Creature.new :ant 500 500))
     )
+    (table.insert tbl (WorldObj.new :heart 500 500))
     tbl
   )
 )
+
 
 (fn love.load []
   (world:setobjects objects)

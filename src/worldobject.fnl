@@ -1,3 +1,8 @@
+
+; IMPORTS 
+(local utils (require :src.utils))
+
+
 ; METHODS
 
 (fn draw [self px py]
@@ -15,23 +20,28 @@
 
 )
 
-
 ; INTERFACE
 
 (local WorldObject {
     :x 0
     :y 0
     :mass 0
-    :rotation (/ math.pi 4) 
+    :rotation 0
+    :health 100
 
     ; IMAGE VALS
     :image "assets/heart.jpg"
-    :X_MID
-    :Y_MID
+    :X_MID 0
+    :Y_MID 0
 
+    ; PROPERTIES
 
     :collide false
     :draggable false
+    :edible false
+
+    ; GEOMETRY
+    :hitbox nil
 
     :draw draw
     :update update
@@ -40,20 +50,10 @@
 ; CONSTRUCTOR
 
 (fn new [objtype x y]
-    (let [ instance {} ]
-        (each [key default (pairs WorldObject)]
-            (tset instance key default)
-        )   
-
+    (let [ instance (utils.tcopy WorldObject)]
+ 
         ; load image from path
-        (set instance.image (love.graphics.newImage instance.image))
-        (let [
-            width (love.graphics.getPixelWidth instance.image)
-            height (love.graphics.getPixelHeight instance.image)
-            ]
-            (set instance.X_MID 50) ; MAGIC VALUES :D 
-            (set instance.Y_MID 50)
-        )
+        (utils.tloadimage instance 50 50)
 
         (set instance.x x)
         (set instance.y y)
@@ -65,4 +65,4 @@
 
 ; MODULE EXPORTS 
 
-{:new new}
+{:new new :WorldObject WorldObject}

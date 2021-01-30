@@ -1,5 +1,9 @@
 
-; FUNCTION DEFINITIONS
+; IMPORTS 
+(local utils (require :src.utils))
+(local WorldObject (require :src.worldobject))
+
+; METHODS
 
 (fn move [cret dt]
     (set cret.x (+ cret.x (* dt cret.velx)))
@@ -18,8 +22,6 @@
         ]
     )
 )
-
-; LOVE CALLBACKS
 
 (fn update [self dt]
     (set self.integrator (+ self.integrator dt))
@@ -44,42 +46,21 @@
     )
 )
 
-(fn draw [self px py]
-    (love.graphics.setColor 255 0 0 255)
-
-    (love.graphics.draw 
-        self.image 
-        (- self.x px) (- self.y py)
-        self.rotation
-        1 1 
-        self.X_MID self.Y_MID
-    )   
-)
-
 ; INTERFACE
 
 (local Creature {
-    :x 100
-    :y 100
+
+    ; MOVEMENT
     :velx 0
     :vely 0
-    :rotation 0
-    :health 100
+    :clock 0
+    :integrator 0
 
-    ; "CONSTS"
     :MAX_VEL 10
     :MAX_CLOCK 5000
     :MIN_CLOCK 500
 
-    ; IMAGE VALS
-    :image ""
-    :X_MID 0
-    :Y_MID 0
-
-    :clock 0
-    :integrator 0
-
-    :draw draw
+    ; OVERRIDES 
     :update update
 })
 
@@ -89,26 +70,13 @@
 (fn new [creeptype x y]
     (let [
             Creep (require (.. "src.creeps." creeptype))
-            instance {}
+            instance (utils.tcopy WorldObject.WorldObject)
         ]
-        (each [key default (pairs Creature)]
-            ; check if default override
-            (if (. Creep key)
-                (tset instance key (. Creep key))
-                ; else
-                (tset instance key default)
-            )
-        )
+        (utils.tadd instance Creature)
+        (utils.tmerge instance Creep)
 
         ; load image from path
-        (set instance.image (love.graphics.newImage instance.image))
-        (let [
-            width (love.graphics.getPixelWidth instance.image)
-            height (love.graphics.getPixelHeight instance.image)
-            ]
-            (set instance.X_MID 30)
-            (set instance.Y_MID 45)
-        )
+        (utils.tloadimage instance 30 45)
 
         (set instance.x x)
         (set instance.y y)
