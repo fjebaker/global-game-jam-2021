@@ -42,7 +42,7 @@
     
         (love.graphics.draw (love.graphics.newImage "assets/start_menu_bg.png") 0 0)
 
-        (love.graphics.print "K A F K A - Start Menu." 100 50)
+        (love.graphics.print "Kafkaesque - Start Menu." 100 50)
 
         ;(love.graphics.rectangle "line" a b 150 button_spacing)
 

@@ -52,7 +52,7 @@
     
         (love.graphics.draw (love.graphics.newImage "assets/pause_menu_bg.png") 0 0)
 
-        (love.graphics.print "K A F K A - Pause Menu." 100 50)
+        (love.graphics.print "Kafkaesque - Pause Menu." 100 50)
 
         ;(love.graphics.rectangle "line" a b 150 button_spacing)
 
