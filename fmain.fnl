@@ -1,6 +1,7 @@
 (local utils (require :src.utils))
 (local audio (require :src.audio))
 
+(local startmenu (require :src.start_menu))
 (local pausemenu (require :src.pause_menu))
 
 ; State
@@ -33,7 +34,6 @@
     (audio.playsongloop)
 )
 
-
 (fn love.draw []
     (love.graphics.clear)
     (if (= state.current "IN-GAME")
@@ -46,6 +46,11 @@
     (if (= state.current "PAUSE")
         (do
             (pausemenu:draw)
+        )
+    )
+    (if (= state.current "HOME")
+        (do
+            (startmenu:draw)
         )
     )
 )
@@ -81,7 +86,14 @@
             (when (love.keyboard.isDown "escape")
                 (set state.current "IN-GAME")
             )
-        )    
+        )   
+        (= state.current "HOME")
+        (do
+            (startmenu.update dt)
+            (when (love.keyboard.isDown "escape")
+                (set state.current "IN-GAME")
+            )
+        )  
     )
 
     ; update
