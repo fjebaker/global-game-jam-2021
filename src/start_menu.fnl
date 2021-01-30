@@ -1,6 +1,6 @@
-(var starting_pos [95 95])
+(var starting_pos [95 200])
 (var pos starting_pos)
-(var button_spacing 25)
+(var button_spacing 50)
 
 ; make empty table of buttons
 (local buttons []) 
@@ -14,13 +14,13 @@
     (var state (require :src.state))
     (set state.current "IN-GAME")
 )
-(addButton "Wake Up" play_funct)
+(addButton "Wake Up." play_funct)
 
 (fn quit_funct []
     (print "quit")
     (love.event.quit 0)
 )
-(addButton "Stay Asleep"  quit_funct)
+(addButton "Stay Asleep."  quit_funct)
 
 ;assign button positions
 
@@ -42,7 +42,7 @@
     
         (love.graphics.draw (love.graphics.newImage "assets/start_menu_bg.png") 0 0)
 
-        (love.graphics.print "K A F K A - Start Menu." 100 50)
+        (love.graphics.print "Kafkaesque - Start Menu." 100 50)
 
         ;(love.graphics.rectangle "line" a b 150 button_spacing)
 

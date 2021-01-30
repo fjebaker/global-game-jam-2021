@@ -9,6 +9,9 @@
 (var objects [])
 (var state (require :src.state))
 
+;SETTING FONT
+(var font (love.graphics.newFont "assets/fonts/AgreementSignature-qZX6x.ttf" 50))
+(love.graphics.setFont font)
 
 ; LÖVE Hooks
 (fn love.load []
