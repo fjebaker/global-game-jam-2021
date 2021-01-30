@@ -7,7 +7,8 @@
 
 ;function for adding to table
 (fn addButton [text funct]
-    (table.insert buttons [text funct]))
+    (table.insert buttons [text funct])
+)
 
 ;make buttons
 (fn play_funct []
@@ -17,17 +18,19 @@
 (addButton "Wake Up." play_funct)
 
 (fn quit_funct []
-    (print "quit")
     (love.event.quit 0)
 )
-(addButton "Stay Asleep."  quit_funct)
 
-(fn git_funct []
-    (print "git")
-    (love.system.openURL "https://www.youtube.com/watch?v=ukaa9sXbTfw")
+(addButton "Stay Asleep." quit_funct)
+
+(fn git_function []
+    (love.graphics.print "url" 100 50)
+      (love.system.openURL "https://github.com/dustpancake/global-game-jam-2021")
 )
-"https://github.com/dustpancake/global-game-jam-2021"
-(addButton "GitHub." git_funct)
+
+(addButton "GitHub." git_function)
+
+
 ;assign button positions
 
 (let [[a0 b0] starting_pos]
@@ -53,6 +56,7 @@
         ;(love.graphics.rectangle "line" a b 150 button_spacing)
 
         (for [i 1 (length buttons)]
+            
             (let [button (. buttons i)]
 
                 (var text     (. button 1))
@@ -111,7 +115,7 @@
                     (clock:reset)
                     ;find relative functoin and call it
 
-                    (var button_index (+ (/ (- b b0) 25) 1))
+                    (var button_index (+ (/ (- b b0) button_spacing) 1))
                     (let [button (. buttons button_index )]
                         (var function (. button 2))
                         (function)
