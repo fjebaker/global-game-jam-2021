@@ -34,11 +34,11 @@
 
     (let [[a b] pos]
     
-        (love.graphics.draw (love.graphics.newImage "assets/pause_menu_bg.png") 0 0)
+        (love.graphics.draw (love.graphics.newImage "assets/final_menu_bg.png") 0 0)
 
         (love.graphics.print "Kafkaesque - Fin." 100 50)
 
-        (love.graphics.rectangle "line" a b 150 button_spacing)
+        ;(love.graphics.rectangle "line" a b 150 button_spacing)
 
         (for [i 1 (length buttons)]
             (let [button (. buttons i)]
