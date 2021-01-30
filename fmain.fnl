@@ -90,7 +90,12 @@
         )
         ; Game state
         (= state.current "IN-GAME")
-        (do
+        (do 
+            (let [hero (. objects 1)]
+                (if (hero:starving dt)
+                    (set state.current "PAUSE")
+                )
+            )
             (world:update dt)
             (utils.tmapupdate objects dt)
             (when (love.keyboard.isDown "escape")
