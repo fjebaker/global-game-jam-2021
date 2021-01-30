@@ -73,7 +73,7 @@
         (utils.tloadimage instance 110 125)
 
         ; Set up character physics
-        (set instance.shape (love.physics.newRectangleShape 220 250))
+        (set instance.shape (love.physics.newRectangleShape 100 125))
         (set instance.fixture (love.physics.newFixture instance.body instance.shape))
         (instance.body:setAwake true)
 
