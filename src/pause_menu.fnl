@@ -13,23 +13,23 @@
 (fn play_funct []
     (print "play")
 )
-(addButton "- Play" play_funct)
+(addButton "Play" play_funct)
 
 (fn settings_funct []
     (print "settings")
 )
-(addButton "- Settings"  settings_funct)
+(addButton "Settings"  settings_funct)
 
 (fn donate_funct []
     (print "donate")
 )
-(addButton "- Donate to the Devs" donate_funct)
+(addButton "Donate to the Devs" donate_funct)
 
 (fn quit_funct []
     (print "quit")
     (love.event.quit 0)
 )
-(addButton "- Quit"  quit_funct)
+(addButton "Quit"  quit_funct)
 
 ;assign button positions
 
@@ -53,7 +53,7 @@
 
         (love.graphics.print "K A F K A - Pause Menu." 100 50)
 
-        (love.graphics.rectangle "line" a b 150 button_spacing)
+        ;(love.graphics.rectangle "line" a b 150 button_spacing)
 
         (for [i 1 (length buttons)]
             (let [button (. buttons i)]
@@ -109,6 +109,16 @@
                     (if (>= (- b button_spacing) min_pos)
                         (set pos [a (- b button_spacing)])
                     )
+                )
+                (when (love.keyboard.isDown "return")
+                    (clock:reset)
+                    ;find relative functoin and call it
+
+                    (var button_index (+ (/ (- b b0) 25) 1))
+                    (let [button (. buttons button_index )]
+                        (var function (. button 2))
+                        (function)
+                    )                                 
                 )
             )
         )
