@@ -2,16 +2,16 @@
 ; There is so much optimisation that could be do here
 ; even from just simple things like precalculating the l2distances
 ; instead of theoretically having to compute it multiple times per loop
-; but I am tired and this needs to get done so there. 
+; but I am tired and this needs to get done so there.
 
 (local geo (require :src.geometry))
 
-(fn areclose [obj1 obj2] 
+(fn areclose [obj1 obj2]
     ; checks if l2 distance under radius
     (let [
         d1 (geo.l2dist obj1.x obj1.y)
         d2 (geo.l2dist obj2.x obj2.y)
-    ]   
+    ]
         ; finer geometry calculations would go here if we need them
         (> obj1.hitbox.radius (math.abs (- d1 d2)))
     )

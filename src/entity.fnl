@@ -1,5 +1,5 @@
 
-; IMPORTS 
+; IMPORTS
 (local utils (require :src.utils))
 
 
@@ -7,26 +7,24 @@
 
 (fn draw [self px py]
     ; (love.graphics.setColor 255 255 255 255)
-    (love.graphics.draw 
-        self.image 
+    (love.graphics.draw
+        self.image
         (- self.x px) (- self.y py)
         self.rotation
-        1 1 
+        1 1
         self.X_MID self.Y_MID
-    )   
+    )
 )
 
 (fn update [self dt]
-    
 )
 
 (fn collide [self object]
-
 )
 
 ; INTERFACE
 
-(local WorldObject {
+(local Entity {
     :x 0
     :y 0
     :mass 0
@@ -55,8 +53,8 @@
 ; CONSTRUCTOR
 
 (fn new [objtype x y]
-    (let [ instance (utils.tcopy WorldObject)]
- 
+    (let [instance (utils.tcopy Entity)]
+
         ; load image from path
         (utils.tloadimage instance 50 50)
 
@@ -68,6 +66,6 @@
 )
 
 
-; MODULE EXPORTS 
+; MODULE EXPORTS
 
-{:new new :WorldObject WorldObject}
+{:new new :Entity Entity}

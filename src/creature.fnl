@@ -1,7 +1,7 @@
 
-; IMPORTS 
+; IMPORTS
 (local utils (require :src.utils))
-(local WorldObject (require :src.worldobject))
+(local Entity (require :src.entity))
 (local geo (require :src.geometry))
 
 ; METHODS
@@ -28,7 +28,7 @@
     (set self.integrator (+ self.integrator dt))
     (if (> self.integrator self.clock)
         ; update clock value
-        (do 
+        (do
             ; init clock with new value, reset integrator
             (set self.clock (/ (math.random self.MIN_CLOCK self.MAX_CLOCK) 1000))
             (set self.integrator 0)
@@ -40,7 +40,7 @@
                 (set self.vely (* self.MAX_VEL vely))
             )
         )
-        ; else 
+        ; else
         (do
             (move self dt)
         )
@@ -54,12 +54,12 @@
         dx (- self.x object.x)
         dy (- self.y object.y)
         (cx cy) (unpack (geo.normalize dx dy)) ; normed collision vector
-        (vx vy) (unpack (geo.normalize self.velx self.vely)) ; normed velocity vector 
+        (vx vy) (unpack (geo.normalize self.velx self.vely)) ; normed velocity vector
 
         mag (- (/ (geo.dot cx cy vx vy) 2) 0.5) ; resultant collision effect
         ]
-        (print dx dy)
-        (print self " :: mag " mag)
+        ; (print dx dy)
+        ; (print self " :: mag " mag)
         (set self.velx (* self.velx mag))
         (set self.vely (* self.vely mag))
     )
@@ -84,7 +84,7 @@
     :collidable true
     :attackable true
 
-    ; OVERRIDES 
+    ; OVERRIDES
     :update update
     :collide collide
 
@@ -96,7 +96,7 @@
 (fn new [creeptype x y]
     (let [
             Creep (require (.. "src.creeps." creeptype))
-            instance (utils.tcopy WorldObject.WorldObject)
+            instance (utils.tcopy Entity.Entity)
         ]
         (utils.tadd instance Creature)
         (utils.tmerge instance Creep)
@@ -111,6 +111,6 @@
     )
 )
 
-; MODULE EXPORTS 
+; MODULE EXPORTS
 
-{:new new} 
+{:new new}
