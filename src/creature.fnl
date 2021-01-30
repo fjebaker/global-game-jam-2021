@@ -19,39 +19,6 @@
     )
 )
 
-; CONSTRUCTOR
-
-(fn new [creeptype x y]
-    (let [
-            Creep (require (.. "src.creeps." creeptype))
-            instance {}
-        ]
-        (each [key default (pairs _G.Creature)]
-            ; check if default override
-            (if (. Creep key)
-                (tset instance key (. Creep key))
-                ; else
-                (tset instance key default)
-            )
-        )
-
-        ; load image from path
-        (set instance.image (love.graphics.newImage instance.image))
-        (let [
-            width (love.graphics.getPixelWidth instance.image)
-            height (love.graphics.getPixelHeight instance.image)
-            ]
-            (set instance.X_MID 30)
-            (set instance.Y_MID 45)
-        )
-
-        (set instance.x x)
-        (set instance.y y)
-
-        instance
-    )
-)
-
 ; LOVE CALLBACKS
 
 (fn update [self dt]
@@ -91,7 +58,7 @@
 
 ; INTERFACE
 
-(global Creature {
+(local Creature {
     :x 100
     :y 100
     :velx 0
@@ -114,12 +81,42 @@
 
     :draw draw
     :update update
-
-    :new new
 })
 
 
+; CONSTRUCTOR
+
+(fn new [creeptype x y]
+    (let [
+            Creep (require (.. "src.creeps." creeptype))
+            instance {}
+        ]
+        (each [key default (pairs Creature)]
+            ; check if default override
+            (if (. Creep key)
+                (tset instance key (. Creep key))
+                ; else
+                (tset instance key default)
+            )
+        )
+
+        ; load image from path
+        (set instance.image (love.graphics.newImage instance.image))
+        (let [
+            width (love.graphics.getPixelWidth instance.image)
+            height (love.graphics.getPixelHeight instance.image)
+            ]
+            (set instance.X_MID 30)
+            (set instance.Y_MID 45)
+        )
+
+        (set instance.x x)
+        (set instance.y y)
+
+        instance
+    )
+)
+
 ; MODULE EXPORTS 
 
-
-{:Creature Creature}
+{:new new} 

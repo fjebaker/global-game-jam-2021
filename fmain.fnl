@@ -4,10 +4,10 @@
 (local objects
   (let [
       tbl []
-      Mod (require :src.creature)
+      Creature (require :src.creature)
       ]
     (for [i 1 10]
-      (tset tbl i (Mod.Creature.new :ant 500 500))
+      (tset tbl i (Creature.new :ant 500 500))
     )
     tbl
   )
