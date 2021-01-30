@@ -10,6 +10,10 @@
     :down [0.0 0.5 math.pi]
     :left [-0.5 0.0 (+ math.pi half-pi)]
     :up [0.0 -0.5 0.0]
+    :d [0.5 0.0 half-pi]
+    :s [0.0 0.5 math.pi]
+    :a [-0.5 0.0 (+ math.pi half-pi)]
+    :w [0.0 -0.5 0.0]
 })
 
 ; METHODS

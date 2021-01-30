@@ -99,13 +99,13 @@
         
         (if (clock:expired)
             (do
-                (when (love.keyboard.isDown "down")
+                ( when (or (love.keyboard.isDown "down") (love.keyboard.isDown "s"))
                     (clock:reset)
                     (if (<= (+ b button_spacing) max_pos)
                         (set pos [a (+ b button_spacing)])
                     )
                 )
-                (when (love.keyboard.isDown "up")
+                (when (or (love.keyboard.isDown "up") (love.keyboard.isDown "w"))
                     (clock:reset)
                     (if (>= (- b button_spacing) min_pos)
                         (set pos [a (- b button_spacing)])
