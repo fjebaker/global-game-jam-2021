@@ -29,7 +29,14 @@
 
 (fn drawmap [self]
     "Draw the background"
-    (love.graphics.draw self.floormesh (- half-width self.x) (- half-height self.y))
+    (let [
+        xhalf (- half-width self.x) 
+        yhalf (- half-height self.y)
+        ]
+        (love.graphics.draw self.floormesh xhalf yhalf)
+        ; draw window ontop
+        (self.window:draw xhalf yhalf)
+    )
 )
 
 (fn move [self delta]
@@ -46,6 +53,12 @@
 
 (fn position [self]
     (values self.x self.y)
+)
+
+(fn inwindow [self hero]
+    (let [(x y) (hero:position)]
+        (self.window:isinside x y)
+    )
 )
 
 (fn update [self dt]
@@ -122,6 +135,7 @@
         (newfloortexture instance mapcoords)
 
         ; init a window
+        (set instance.window (RoomWindow.new instance))
     )
 )
 
@@ -141,6 +155,7 @@
     :move move
     :position position
     :update update
+    :inwindow inwindow
 
     ; MAP IMAGES
     :floor-texture "assets/floortile.png"
@@ -151,6 +166,9 @@
     ; MESHES
     :floormesh nil
     :wallmesh nil
+    
+    ; ROOM WINDOW
+    :window nil
 
 })
 ; CONSTRUCTOR

@@ -26,15 +26,13 @@
     )
 )
 
-(fn tloadimage [instance midx midy]
+(fn tloadimage [instance]
     ; replaces :image of self with a love Image instance
     (set instance.image (love.graphics.newImage instance.image))
-    (let [
-        width (love.graphics.getPixelWidth instance.image)
-        height (love.graphics.getPixelHeight instance.image)
-        ]
-        (set instance.X_MID midx)
-        (set instance.Y_MID midy)
+    (let [width (instance.image:getWidth)
+            height (instance.image:getHeight)]
+        (set instance.X_MID (/ width 2))
+        (set instance.Y_MID (/ height 2))
     )
 )
 
