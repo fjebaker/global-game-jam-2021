@@ -36,7 +36,7 @@
         )
         ; check win condition
         (if (self.world:inwindow hero)
-            (set state.current "END")
+            (set state.current "END-W")
         )
     )
 
