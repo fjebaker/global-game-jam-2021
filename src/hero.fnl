@@ -5,7 +5,7 @@
 
 ; CONSTANTS
 (local starve-rate 3.0)
-(local nourish-rate -7.25)
+(local nourish-rate -10.25)
 (local half-pi (/ math.pi 2))
 (local movements {
     :right [0.5 0.0 half-pi]
@@ -48,18 +48,27 @@
     (let [new-hunger (- self.hunger (* self.starve-rate dt))]
         (set self.hunger (math.max 0 (math.min 100 new-hunger)))
     )
+    (if self.food
+        (when (not self.food.edible)
+            (set self.starve-rate starve-rate)
+        )
+    )
     (= self.hunger 0)
 )
 
 (fn collide-with [self other contact]
     (when (. other :edible)
         (set self.starve-rate nourish-rate)
+        (other:deteriorate nourish-rate)
+        (set self.food other)
     )
 )
 
 (fn part-with [self other contact]
     (when (. other :edible)
         (set self.starve-rate starve-rate)
+        (other:deteriorate 0)
+        (set self.food nil)
     )
 )
 
@@ -79,6 +88,7 @@
     ; STARVE MECHANICS
     :starve-rate starve-rate ; starve rate in amount per second
     :starving starving
+    :food nil
 
     ; IMAGE VALS
     :image "assets/beetle.png"
