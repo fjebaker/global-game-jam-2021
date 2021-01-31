@@ -19,6 +19,7 @@
 
 ; LÖVE Hooks
 (fn love.load []
+    (math.randomseed (os.time)) ; init random number seed
     (william.loadquotes)
     (william.playrandom)
     (audio.playsongloop)
