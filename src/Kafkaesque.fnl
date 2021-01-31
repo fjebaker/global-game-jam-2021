@@ -1,5 +1,5 @@
 (local utils (require :src.utils))
-
+(local audio (require :src.audio))
 (var state (require :src.state))
 
 ; METHODS
@@ -32,11 +32,13 @@
         ; check if lose
         (if (hero:starving dt)
             ; change state
-            (set state.current "END-L")
+            (do (audio.playlose)
+            (set state.current "END-L"))
         )
         ; check win condition
         (if (self.world:inwindow)
-            (set state.current "END-W")
+            (do (audio.playwin)
+            (set state.current "END-W"))
         )
     )
 
