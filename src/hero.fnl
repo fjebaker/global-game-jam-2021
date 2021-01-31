@@ -19,22 +19,13 @@
 ; METHODS
 
 (fn update [self dt]
-    (var pre_angle half-pi)
+    ; Handle movement
     (each [key delta (pairs movements)]
         (when (love.keyboard.isDown key)
             (let [(dx dy angle) (unpack delta)]
                 (self.body:applyLinearImpulse dx dy)
                 ; Point in the direction of movement
-                ;ben was working on this at 2am and got tired
-                (when (not= angle pre_angle)
-                    (var angle_ (/ (+ angle pre_angle) 2))
-                    (self.body:setAngle angle_)
-                    (set pre_angle angle_)
-                )
-                (when (= angle pre_angle)
-                    (self.body:setAngle angle)
-                    (set pre_angle angle)
-                )
+                (self.body:setAngle angle)
             )
         )
     )
