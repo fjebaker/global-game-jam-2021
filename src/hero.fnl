@@ -50,11 +50,16 @@
     )
 )
 
-
 (fn starving [self dt]
     ; applies starve mechanic and returns bool for less than 0
     (set self.hunger (- self.hunger (* self.S_RATE dt)))
     (< self.hunger 0)
+)
+
+(fn collide-with [self other contact]
+)
+
+(fn part-with [self other contact]
 )
 
 ; INTERFACE
@@ -80,6 +85,8 @@
 
     ; OVERRIDES
     :update update
+    :collide-with collide-with
+    :part-with part-with
 })
 
 ; CONSTRUCTOR
@@ -97,6 +104,8 @@
         (instance.body:setMass instance.mass)
         (instance.body:setLinearDamping instance.damping)
         (instance.body:setAwake true)
+        ; Attach an instance reference to the fixture for collision reporting
+        (instance.fixture:setUserData instance)
 
         ; load image from path
         (utils.tloadimage instance 137 150)

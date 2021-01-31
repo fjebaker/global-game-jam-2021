@@ -54,6 +54,25 @@
 
 ; PRIVATE UTILS
 
+(fn collision-start-cb [f1 f2 contact]
+    (let [o1 (f1:getUserData)
+          o2 (f2:getUserData)]
+        (when (and o1 o2)
+            (o1:collide-with o2 contact)
+        )
+    )
+)
+
+(fn collision-end-cb [f1 f2 contact]
+    (let [o1 (f1:getUserData)
+          o2 (f2:getUserData)]
+        (when (and o1 o2)
+            (o1:part-with o2 contact)
+        )
+    )
+)
+
+
 (fn create-walls [instance]
     "Add static walls to the world to keep things in bounds"
     (let [(lx ly) (unpack instance.limits)
@@ -144,6 +163,7 @@
         (set instance.y y)
         ; New physics world with no gravity and sleepable bodies
         (set instance.physics (love.physics.newWorld 0 0 true))
+        (instance.physics:setCallbacks collision-start-cb collision-end-cb)
         (create-walls instance)
 
         instance

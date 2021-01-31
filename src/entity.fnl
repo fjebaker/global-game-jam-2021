@@ -19,7 +19,7 @@
             1 1
             self.X_MID self.Y_MID
         )
-        (love.graphics.setColor 1 1 1 1) ; unset colour 
+        (love.graphics.setColor 1 1 1 1) ; unset colour
     )
 )
 
@@ -30,6 +30,12 @@
 (fn update [self dt]
 )
 
+(fn collide-with [self other contact]
+)
+
+(fn part-with [self other contact]
+)
+
 ; INTERFACE
 
 (local Entity {
@@ -37,7 +43,11 @@
     :body nil
     :shape nil
     :fixture nil
-    
+
+    ; PHYSICS QUANTS
+    :mass 0
+    :damping 1
+
     ; TINTING
     :rtint 1
     :gtint 1
@@ -55,6 +65,8 @@
     :edible false
     :attackable false
 
+    :collide-with collide-with
+    :part-with part-with
     :draw draw
     :position position
     :update update
