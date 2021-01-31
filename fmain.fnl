@@ -1,5 +1,6 @@
 (local utils (require :src.utils))
 (local audio (require :src.audio))
+(local william (require :src.william))
 
 (local startmenu (require :src.start_menu))
 (local pausemenu (require :src.pause_menu))
@@ -18,6 +19,8 @@
 
 ; LÖVE Hooks
 (fn love.load []
+    (william.loadquotes)
+    (william.playrandom)
     (audio.playsongloop)
 )
 
@@ -108,6 +111,8 @@
             ; update game
             (game:update dt)
 
+            ; update william
+            (william.update dt)
 
             (when (love.keyboard.isDown "escape")
                 (set state.current "PAUSE")
