@@ -2,7 +2,6 @@
 ; IMPORTS
 (local utils (require :src.utils))
 
-
 ; METHODS
 
 (fn draw [self ox oy]
@@ -20,6 +19,17 @@
             self.X_MID self.Y_MID
         )
         (love.graphics.setColor 1 1 1 1) ; unset colour
+        ; Physics bounding box debugging
+        ; (let [pts [(self.body:getWorldPoints (self.shape:getPoints))]
+        ;       offpts []]
+        ;     (for [i 1 (length pts) 2]
+        ;         (do
+        ;             (tset offpts i (- (. pts i) ox))
+        ;             (tset offpts (+ i 1) (- (. pts (+ i 1)) oy))
+        ;         )
+        ;     )
+        ;     (love.graphics.polygon "line" (unpack offpts))
+        ; )
     )
 )
 
@@ -47,6 +57,7 @@
     ; PHYSICS QUANTS
     :mass 0
     :damping 1
+    :bbox [0 0]
 
     ; TINTING
     :rtint 1
@@ -55,7 +66,7 @@
     :atint 1
 
     ; IMAGE VALS
-    :image "assets/beetle.png"
+    :image ""
     :X_MID 0
     :Y_MID 0
 
@@ -74,13 +85,20 @@
 
 ; CONSTRUCTOR
 
-(fn new [instance x y physicsworld bodytype]
+(fn new [instance extras x y physicsworld bodytype]
     (utils.tadd instance Entity)
+    (utils.tadd instance extras)
+
     ; load image from path
-    (utils.tloadimage instance 50 50)
+    (utils.tloadimage instance)
 
     ; Init the physics state for the entity
     (set instance.body (love.physics.newBody physicsworld x y bodytype))
+    (set instance.shape (love.physics.newRectangleShape (unpack instance.bbox)))
+    (set instance.fixture (love.physics.newFixture instance.body instance.shape))
+    (instance.body:setMass instance.mass)
+    (instance.body:setLinearDamping instance.damping)
+    (instance.body:setAwake true)
 
     instance
 )
