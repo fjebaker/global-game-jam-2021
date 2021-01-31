@@ -37,7 +37,12 @@
             (startmenu:draw)
         )
     )
-    (if (= state.current "END")
+    (if (= state.current "END-L")
+        (do
+            (finalmenu:draw)
+        )
+    )
+    (if (= state.current "END-W")
         (do
             (finalmenu:draw)
         )
@@ -86,7 +91,11 @@
             (helpmenu.update dt)
         )
         ;final
-        (= state.current "END")
+        (= state.current "END-L")
+        (do
+            (finalmenu.update dt)
+        )
+        (= state.current "END-W")
         (do
             (finalmenu.update dt)
         )
@@ -107,7 +116,6 @@
         (do 
             ; update game
             (game:update dt)
-
 
             (when (love.keyboard.isDown "escape")
                 (set state.current "PAUSE")

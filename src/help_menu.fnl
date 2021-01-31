@@ -34,11 +34,24 @@
 
     (let [[a b] pos]
     
-        (love.graphics.draw (love.graphics.newImage "assets/final_menu_bg.png") 0 0)
+        (love.graphics.draw (love.graphics.newImage "assets/help_menu_bg.png") -300 -210 0 1.3 1.3 0 0)
 
         (love.graphics.print "Kafkaesque - Pause Menu - Help." 100 50)
 
-        (love.graphics.print "You have awoken as a beetle in a world you once knew, you now feel lost \n and vlnerable. Find food and a way to escape this domestic prison...\n\nUse 'W A S D' or arrow keys crawl to freedom." 100 200)
+        ;CHANGING FONT FOR THIS PARA
+        (var font (love.graphics.newFont "assets/fonts/NugoSansLight-9YzoK.ttf" 20))
+        (love.graphics.setFont font)      
+
+        (love.graphics.print "Help I'm a beetle?
+You have awoken as a beetle in a forgein world you once knew.
+Now feeling lost and vulnerable, you must find food and a way to escape
+this domestic prison...\n
+Controls
+Use 'W-A-S-D' or arrow keys crawl to freedom." 100 200)
+
+        ;RESETTING FONT
+        (var font (love.graphics.newFont "assets/fonts/AgreementSignature-qZX6x.ttf" 40))
+        (love.graphics.setFont font)
 
         ;(love.graphics.rectangle "line" a b 150 button_spacing)
 

@@ -33,10 +33,27 @@
 (fn draw []
 
     (let [[a b] pos]
-    
-        (love.graphics.draw (love.graphics.newImage "assets/final_menu_bg.png") 0 0)
 
-        (love.graphics.print "Kafkaesque - Fin.\n\n``Slept, awoke, slept, awoke, miserable life''\n-Franz Kafka" 100 50)
+    
+        ;set bg and text from win-lose here
+        (var state (require :src.state))
+        (if 
+            (= state.current "END-L")
+            (do
+                (love.graphics.draw (love.graphics.newImage "assets/final_menu_lose_bg.png") 0 0 0 0.863 0.863 0 0)
+                (love.graphics.print "Kafkaesque - Fin. (You did not survie)\n\n``Slept, awoke, slept, awoke, miserable life''\n-Franz Kafka" 100 50)
+                
+            )
+            (= state.current "END-W")
+            (do
+                (love.graphics.draw (love.graphics.newImage "assets/final_menu_win_bg.png") 0 0 0 0.863 0.863 0 0)
+                (love.graphics.print "Kafkaesque - Fin. (You survived!)\n\n``Slept, awoke, slept, awoke, miserable life''\n-Franz Kafka" 100 50)
+                
+            )
+        )
+
+        ;(love.graphics.print  "Kafkaesque - Fin. (You did not survie)\n\n``Slept, awoke, slept, awoke, miserable life''\n-Franz Kafka" 100 200)
+     
 
         ;(love.graphics.rectangle "line" a b 150 button_spacing)
 
