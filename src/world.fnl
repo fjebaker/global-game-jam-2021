@@ -29,7 +29,14 @@
 
 (fn drawmap [self]
     "Draw the background"
-    (love.graphics.draw self.floormesh (- half-width self.x) (- half-height self.y))
+    (let [
+        xhalf (- half-width self.x) 
+        yhalf (- half-height self.y)
+        ]
+        (love.graphics.draw self.floormesh xhalf yhalf)
+        ; draw window ontop
+        (self.window:draw xhalf yhalf)
+    )
 )
 
 (fn move [self delta]
@@ -122,6 +129,7 @@
         (newfloortexture instance mapcoords)
 
         ; init a window
+        (set instance.window (RoomWindow.new instance))
     )
 )
 
@@ -151,6 +159,9 @@
     ; MESHES
     :floormesh nil
     :wallmesh nil
+    
+    ; ROOM WINDOW
+    :window nil
 
 })
 ; CONSTRUCTOR
