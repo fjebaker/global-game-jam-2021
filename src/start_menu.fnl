@@ -23,19 +23,13 @@
 
 (addButton "Stay Asleep. - quit" quit_funct)
 
-(fn git_function []
-    (love.graphics.print "url" 100 50)
-      (love.system.openURL "https://github.com/dustpancake/global-game-jam-2021")
+(fn creds_funct []
+    (var state (require :src.state))
+    (set state.current "CREDS")
 )
 
-(addButton "GitHub." git_function)
+(addButton "Credits." creds_funct)
 
-(fn wiki_function []
-    (love.graphics.print "url" 100 50)
-      (love.system.openURL "https://en.wikipedia.org/wiki/The_Metamorphosis")
-)
-
-(addButton "Metamorphosis?" wiki_function)
 
 ;assign button positions
 
