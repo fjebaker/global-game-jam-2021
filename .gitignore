@@ -8,4 +8,5 @@ luac.out
 
 # Build artifacts
 releases/
+src/**/*.lua
 fmain.lua
