@@ -31,9 +31,11 @@
 )
 
 (fn collide-with [self other contact]
+    (print "COL")
 )
 
 (fn part-with [self other contact]
+    (print "EXI")
 )
 
 ; INTERFACE
@@ -43,6 +45,9 @@
     :body nil
     :shape nil
     :fixture nil
+
+    ; ACTION
+    :hasaction false
 
     ; PHYSICS QUANTS
     :mass 0

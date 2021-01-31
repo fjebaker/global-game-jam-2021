@@ -81,6 +81,7 @@
         (instance.body:setMass instance.mass)
         (instance.body:setLinearDamping instance.damping)
         (instance.body:setAwake true)
+        (instance.fixture:setCategory 1 2)
 
         instance
     )

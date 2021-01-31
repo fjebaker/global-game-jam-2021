@@ -58,7 +58,10 @@
     (let [o1 (f1:getUserData)
           o2 (f2:getUserData)]
         (when (and o1 o2)
-            (o1:collide-with o2 contact)
+            (do
+                (when o1.hasaction (o1:collide-with o2 contact))
+                (when o2.hasaction (o2:collide-with o1 contact))
+            )
         )
     )
 )
@@ -67,7 +70,10 @@
     (let [o1 (f1:getUserData)
           o2 (f2:getUserData)]
         (when (and o1 o2)
-            (o1:part-with o2 contact)
+            (do
+                (when o1.hasaction (o1:collide-with o2 contact))
+                (when o2.hasaction (o2:collide-with o1 contact))
+            )
         )
     )
 )
@@ -163,7 +169,7 @@
         (set instance.y y)
         ; New physics world with no gravity and sleepable bodies
         (set instance.physics (love.physics.newWorld 0 0 true))
-        (instance.physics:setCallbacks collision-start-cb collision-end-cb)
+        (instance.physics:setCallbacks collision-start-cb collision-end-cb collision-start-cb collision-end-cb)
         (create-walls instance)
 
         instance

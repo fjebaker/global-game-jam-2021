@@ -56,6 +56,7 @@
         (instance.body:setAwake true)
         ; Attach an instance reference to the fixture for collision reporting
         (instance.fixture:setUserData instance)
+        (instance.fixture:setCategory 1 2)
 
         instance
     )

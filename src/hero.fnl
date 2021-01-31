@@ -2,6 +2,7 @@
 ; IMPORTS
 (local utils (require :src.utils))
 (local Entity (require :src.entity))
+(local EatHitBox (require :src.actions.eat))
 
 ; CONSTANTS
 (local half-pi (/ math.pi 2))
@@ -16,7 +17,29 @@
     :w [0.0 -0.5 0.0]
 })
 
+
+; ACTION CLOCK
+(local clock {
+    :integrator 0
+    :delay 0.5 ; button delay
+
+    :reset (fn reset [self] 
+        (set self.integrator 0)
+    )
+    :expired (fn expired [self] 
+        (> self.integrator self.delay)
+    )
+    :add (fn add [self dt] 
+        (set self.integrator (+ self.integrator dt))
+    )
+})
+
 ; METHODS
+(fn eat [self]
+    (var x 0) (var y 0)
+    (lua "x, y = self.body:getPosition()") ; only way i can get both????
+    (self.eathitbox:spawn x y)
+)
 
 (fn update [self dt]
     ; Handle movement
@@ -29,6 +52,22 @@
             )
         )
     )
+
+    (clock:add dt)
+    (if (clock:expired)
+        (if (not self.acting)
+            (if (love.keyboard.isDown :space)
+                (do
+                    (self:eat)
+                    (clock:reset)
+                    (set self.acting true)
+                )
+            )
+            (do (set self.acting false) (self.eathitbox:despawn))
+        )
+    )
+
+
     ; Keep the world centered on us
     (let [(ox oy lx ly) (self._world:boundary)
           (wx wy) (self._world:position)
@@ -65,6 +104,11 @@
     ; STATS
     :hunger 75
 
+    ; ACTIONS 
+    :eathitbox nil
+    :acting false
+    :eat eat
+
     ; STARVE MECHANICS
     :S_RATE 5   ; starve rate in amount per second
     :starving starving
@@ -100,6 +144,10 @@
 
         ; load image from path
         (utils.tloadimage instance 137 150)
+        (instance.fixture:setMask 2)
+        
+        ; configure eat hit box
+        (set instance.eathitbox (EatHitBox.new instance world.physics))
 
         instance
     )
