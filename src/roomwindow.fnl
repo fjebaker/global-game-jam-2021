@@ -1,10 +1,20 @@
-
 (local utils (require :src.utils))
 
 ; METHODS
 
-(fn positionin [x y]
+(fn isinside [self x y]
+    ; awful way of doing this 
+    (var ret false)
 
+    (let [(x_min x_max y_min y_max) (unpack self.boundingbox)]
+        (when (and (>= x x_min) (<= x x_max) (>= y y_min) (<= y y_max))
+            (print "YOU WIN")
+            (set ret true)
+        )
+
+    )
+
+    ret
 )
 
 
@@ -16,11 +26,11 @@
         ]
         (if self.vertical
             (do
-                (love.graphics.rectangle :fill (- xpos self.HEIGHT) (- ypos self.WIDTH) self.HEIGHT self.WIDTH)
+                (love.graphics.rectangle :fill (- xpos self.HEIGHT) ypos self.HEIGHT self.WIDTH)
             )
             ; horizontal
             (do
-                (love.graphics.rectangle :fill (- xpos self.WIDTH) (- ypos self.HEIGHT) self.WIDTH self.HEIGHT)
+                (love.graphics.rectangle :fill xpos (- ypos self.HEIGHT) self.WIDTH self.HEIGHT)
             )
         )
     
@@ -35,19 +45,42 @@
     :y 0 
     :vertical false
 
+    :boundingbox nil ; [xmin xmax ymin ymax]
+
     ; CONFIG
 
     :WIDTH 700
-    :HEIGHT 50  
-
-
+    :HEIGHT 200  
 
     :draw draw
-    :positionin positionin ; returns true/false position inside the window area
+    :isinside isinside ; returns true/false position inside the window area
 })
 
 
 ; CONSTRUCTORS
+
+(fn newboundingbox [instance]
+    (let [
+        ret []
+        ]
+        (if instance.vertical 
+            (do ; vertical config
+                (tset ret 1 (- instance.x instance.HEIGHT))
+                (tset ret 2 instance.x)
+                (tset ret 3 instance.y)
+                (tset ret 4 (+ instance.y instance.WIDTH))
+            
+            )
+            (do ; horizontal config
+                (tset ret 1 instance.x)
+                (tset ret 2 (+ instance.x instance.WIDTH))
+                (tset ret 3 (- instance.y instance.HEIGHT))
+                (tset ret 4 instance.y)
+            )
+        ) 
+        ret    
+    )
+)
 
 (fn randompos [limits]
     (let [
@@ -58,14 +91,14 @@
         (if (= (math.random 0 1) 0)
             ; vertical wall
             (do 
-                (tset ret 1 (* (math.random 0 1) xlimit))
-                (tset ret 2 (math.min (* scale ylimit) (- ylimit RoomWindow.WIDTH) )) ; clamped
+                (tset ret 1 (math.max (* (math.random 0 1) xlimit) RoomWindow.HEIGHT))
+                (tset ret 2 (math.max (math.min (* scale ylimit) (- ylimit RoomWindow.WIDTH) ) RoomWindow.WIDTH)) ; clamped
                 (tset ret 3 true)
             )
             ; horizontal wall 
             (do 
-                (tset ret 1 (math.min (* scale xlimit) (- xlimit RoomWindow.WIDTH) ))
-                (tset ret 2 (* (math.random 0 1) ylimit))
+                (tset ret 1 (math.max (math.min (* scale xlimit) (- xlimit RoomWindow.WIDTH) ) RoomWindow.WIDTH) )
+                (tset ret 2 (math.max (* (math.random 0 1) ylimit) RoomWindow.HEIGHT))
                 (tset ret 3 false)
             )
         )   
@@ -83,6 +116,7 @@
         (set instance.x x)
         (set instance.y y)
         (set instance.vertical vert)
+        (set instance.boundingbox (newboundingbox instance))
         instance
     )
 

@@ -34,6 +34,10 @@
             ; change state
             (set state.current "END")
         )
+        ; check win condition
+        (if (self.world:inwindow hero)
+            (set state.current "END")
+        )
     )
 
     ; world update
@@ -41,6 +45,7 @@
 
     ; object update
     (utils.tmapupdate self.objects dt)
+
 )
 
 ; DRAW

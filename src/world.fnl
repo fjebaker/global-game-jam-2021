@@ -55,6 +55,12 @@
     (values self.x self.y)
 )
 
+(fn inwindow [self hero]
+    (let [(x y) (hero:position)]
+        (self.window:isinside x y)
+    )
+)
+
 (fn update [self dt]
     (self.physics:update dt)
 )
@@ -149,6 +155,7 @@
     :move move
     :position position
     :update update
+    :inwindow inwindow
 
     ; MAP IMAGES
     :floor-texture "assets/floortile.png"
