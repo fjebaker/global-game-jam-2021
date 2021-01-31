@@ -4,6 +4,8 @@
 (local Entity (require :src.entity))
 
 ; CONSTANTS
+(local starve-rate 1.25)
+(local nourish-rate -7.25)
 (local half-pi (/ math.pi 2))
 (local movements {
     :right [0.5 0.0 half-pi]
@@ -43,14 +45,22 @@
 
 (fn starving [self dt]
     ; applies starve mechanic and returns bool for less than 0
-    (set self.hunger (- self.hunger (* self.S_RATE dt)))
-    (< self.hunger 0)
+    (let [new-hunger (- self.hunger (* self.starve-rate dt))]
+        (set self.hunger (math.max 0 (math.min 100 new-hunger)))
+    )
+    (= self.hunger 0)
 )
 
 (fn collide-with [self other contact]
+    (when (. other :edible)
+        (set self.starve-rate nourish-rate)
+    )
 )
 
 (fn part-with [self other contact]
+    (when (. other :edible)
+        (set self.starve-rate starve-rate)
+    )
 )
 
 ; INTERFACE
@@ -66,7 +76,7 @@
     :hunger 75
 
     ; STARVE MECHANICS
-    :S_RATE 5   ; starve rate in amount per second
+    :starve-rate starve-rate ; starve rate in amount per second
     :starving starving
 
     ; IMAGE VALS

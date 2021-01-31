@@ -23,6 +23,7 @@
 (local FoodObject {
 
     ; PROPERTIES
+    :edible true
     :draggable true
 
     ; PHYSICS QUANTS
