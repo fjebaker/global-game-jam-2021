@@ -1,41 +1,66 @@
 (local utils (require :src.utils))
 
 (local window-height 200)
-(local window-width 700)
+(local window-width 400)
 
 ; METHODS
 
 (fn draw [self ox oy]
     (love.graphics.setColor 1 1 1 0.7)
-    (let [pts [(self.body:getWorldPoints (self.shape:getPoints))]
-          offpts []]
-        (for [i 1 (length pts) 2]
-            (do
-                (tset offpts i (- (. pts i) ox))
-                (tset offpts (+ i 1) (- (. pts (+ i 1)) oy))
-            )
+    (let [(x y) (self.body:getPosition)
+          angle (self.body:getAngle)]
+        (love.graphics.draw
+            self.image
+            (- x ox) (- y oy)
+            angle
+            1 1
+            self.X_MID self.Y_MID
         )
-        (love.graphics.polygon :fill (unpack offpts))
     )
+    ; Physics debugging
+    ; (let [pts [(self.body:getWorldPoints (self.shape:getPoints))]
+    ;       offpts []]
+    ;     (for [i 1 (length pts) 2]
+    ;         (do
+    ;             (tset offpts i (- (. pts i) ox))
+    ;             (tset offpts (+ i 1) (- (. pts (+ i 1)) oy))
+    ;         )
+    ;     )
+    ;     (love.graphics.polygon :line (unpack offpts))
+    ; )
 )
 
 (fn randompos [limits]
     (let [scale (/ (math.random 0 100 ) 100)
-          (xlimit ylimit) (unpack limits)]
-        (if (< (math.random 0 10) 5)
-            ; vertical wall
-            (values
-                (math.max (* (math.random 0 1) xlimit) window-height)
-                (math.max (math.min (* scale ylimit) (- ylimit window-width) ) window-width)
-                window-height
-                window-width
-            )
-            ; horizontal wall
+          (xlimit ylimit) (unpack limits)
+          top-bottom-left-right (math.random 1 4)]
+        (if (= top-bottom-left-right 1)
+            ; top
             (values
                 (math.max (math.min (* scale xlimit) (- xlimit window-width) ) window-width)
-                (math.max (* (math.random 0 1) ylimit) window-height)
-                window-width
-                window-height
+                0
+                0
+            )
+            (= top-bottom-left-right 2)
+            ; bottom
+            (values
+                (math.max (math.min (* scale xlimit) (- xlimit window-width) ) window-width)
+                ylimit
+                math.pi
+            )
+            (= top-bottom-left-right 3)
+            ; left
+            (values
+                0
+                (math.max (math.min (* scale ylimit) (- ylimit window-width) ) window-width)
+                (* math.pi 1.5)
+            )
+            (= top-bottom-left-right 4)
+            ; right
+            (values
+                xlimit
+                (math.max (math.min (* scale ylimit) (- ylimit window-width) ) window-width)
+                (* math.pi 0.5)
             )
         )
     )
@@ -53,6 +78,12 @@
 
 (local RoomWindow {
 
+    ; IMAGE VALS
+    :image "assets/window.png"
+    :X_MID 0
+    :Y_MID 0
+
+    ; PHYSICS BITS
     :body nil
     :shape nil
     :fixture nil
@@ -63,22 +94,22 @@
     :part-with part-with
     :inwindow false
 
-    ; CONFIG
-    :WIDTH window-width
-    :HEIGHT window-height
-
     :draw draw
 })
 
 (fn new [world]
     (let [physicsworld (. world :physics)
-          (x y w h) (randompos world.limits)
+          (x y angle) (randompos world.limits)
           instance {}]
         (utils.tadd instance RoomWindow)
 
+        ; load the art
+        (utils.tloadimage instance)
+
         (set instance.body (love.physics.newBody physicsworld x y :static))
-        (set instance.shape (love.physics.newRectangleShape w h))
+        (set instance.shape (love.physics.newRectangleShape window-width window-height))
         (set instance.fixture (love.physics.newFixture instance.body instance.shape))
+        (instance.body:setAngle angle)
 
         ; We only want collision callbacks
         (instance.fixture:setSensor true)
