@@ -26,11 +26,19 @@
         (when (love.keyboard.isDown key)
             (let [(dx dy angle) (unpack delta)]
                 (self.body:applyLinearImpulse dx dy)
-                ; Point in the direction of movement
-                (self.body:setAngle angle)
             )
         )
     )
+
+    ; calculate angle
+    (let [
+        (vx vy) (self.body:getLinearVelocity)
+        angle (math.atan2 (- vy) (- vx))
+        ]
+        ; Point in the direction of movement
+        (self.body:setAngle ( - angle (/ math.pi 2)))
+    )
+
     ; Keep the world centered on us
     (let [(ox oy lx ly) (self._world:boundary)
           (wx wy) (self._world:position)
