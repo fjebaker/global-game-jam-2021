@@ -160,7 +160,7 @@
     ; MAP IMAGES
     :floor-texture "assets/floortile.png"
     :wall-texture ""
-    :floor-texture-scale 20
+    :floor-texture-scale 15
     :wall-texture-scale 1
 
     ; MESHES

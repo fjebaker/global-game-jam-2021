@@ -20,6 +20,17 @@
     self.amount
 )
 
+(fn deteriorate [self rate]
+    (set self.depletion-rate (- rate))
+)
+
+(fn update [self dt]
+    (when (< (self:eat (* dt self.depletion-rate)) 0) ; if no food left
+        (self:deteriorate 0)
+        (set self.edible false ) ; is not edible
+    ) 
+)
+
 (local FoodObject {
 
     ; PROPERTIES
@@ -29,6 +40,14 @@
     ; ATTRIBUTES
     :amount max-food ; used as maximum amount
     :fclass 0 ; food class
+
+    :deteriorate deteriorate
+    :depletion-rate 0
+    :eat eat
+    :updatetint updatetint
+
+    ; OVERRIDE
+    :update update
 
 })
 
