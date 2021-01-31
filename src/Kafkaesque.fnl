@@ -80,7 +80,7 @@
 
     ; Configuration
     :NUM_FOOD 10
-    :NUM_CREATURES 10
+    :NUM_CREATURES 20
 
 
     ; METHODS

@@ -1,13 +1,13 @@
 
 
 {
-    :mass 0.001
-    :damping 1
+    :mass 0.01
+    :damping 0.8
     :bbox [50 110]
 
-    :MAX_CLOCK 2000
+    :MAX_CLOCK 3000
     :MIN_CLOCK 100
-    :MAX_VEL 50
+    :MAX_VEL 100
 
     :image "assets/ant.png"
 }

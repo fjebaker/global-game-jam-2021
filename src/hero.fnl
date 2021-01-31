@@ -4,7 +4,7 @@
 (local Entity (require :src.entity))
 
 ; CONSTANTS
-(local starve-rate 1.25)
+(local starve-rate 3.0)
 (local nourish-rate -7.25)
 (local half-pi (/ math.pi 2))
 (local movements {
@@ -69,7 +69,7 @@
     :_world nil
 
     ; PHYSICS QUANTS
-    :mass 0.02
+    :mass 0.14
     :damping 2
     :bbox [100 210]
 
