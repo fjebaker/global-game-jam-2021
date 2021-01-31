@@ -21,10 +21,11 @@
 ;)
 ;(addButton "Settings"  settings_funct)
 ;
-;(fn donate_funct []
-;    (print "donate")
-;)
-;(addButton "Donate to the Devs" donate_funct)
+(fn help_funct []
+    (var state (require :src.state))
+    (set state.current "HELP")
+)
+(addButton "help me Im a beetle?" help_funct)
 
 (fn quit_funct []
     (var state (require :src.state))

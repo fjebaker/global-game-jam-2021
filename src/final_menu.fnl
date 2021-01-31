@@ -1,4 +1,4 @@
-(var starting_pos [95 200])
+(var starting_pos [95 300])
 (var pos starting_pos)
 (var button_spacing 50)
 
@@ -14,7 +14,7 @@
     (var state (require :src.state))
     (set state.current "HOME")
 )
-(addButton "Back to Menu" but_funct)
+(addButton "Back to Menu - (enter)" but_funct)
 
 ;assign button positions
 
@@ -36,7 +36,7 @@
     
         (love.graphics.draw (love.graphics.newImage "assets/final_menu_bg.png") 0 0)
 
-        (love.graphics.print "Kafkaesque - Fin." 100 50)
+        (love.graphics.print "Kafkaesque - Fin.\n\n``Slept, awoke, slept, awoke, miserable life''\n-Franz Kafka" 100 50)
 
         ;(love.graphics.rectangle "line" a b 150 button_spacing)
 

@@ -15,13 +15,13 @@
     (var state (require :src.state))
     (set state.current "RESET")
 )
-(addButton "Wake Up." play_funct)
+(addButton "Wake Up. - play" play_funct)
 
 (fn quit_funct []
     (love.event.quit 0)
 )
 
-(addButton "Stay Asleep." quit_funct)
+(addButton "Stay Asleep. - quit" quit_funct)
 
 (fn git_function []
     (love.graphics.print "url" 100 50)
@@ -30,6 +30,12 @@
 
 (addButton "GitHub." git_function)
 
+(fn wiki_function []
+    (love.graphics.print "url" 100 50)
+      (love.system.openURL "https://en.wikipedia.org/wiki/The_Metamorphosis")
+)
+
+(addButton "Metamorphosis?" wiki_function)
 
 ;assign button positions
 
