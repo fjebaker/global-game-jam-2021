@@ -32,11 +32,11 @@
         ; check if lose
         (if (hero:starving dt)
             ; change state
-            (set state.current "END")
+            (set state.current "END-L")
         )
         ; check win condition
         (if (self.world:inwindow hero)
-            (set state.current "END")
+            (set state.current "END-W")
         )
     )
 
