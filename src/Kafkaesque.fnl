@@ -27,27 +27,26 @@
 ; UPDATE
 
 (fn update [self dt]
-    
-    ; update starving -- have to do it like this so that it updates the state in game properly :(((
-    ((. (. self.objects 1) :starving) (. self.objects 1) dt)
-    ; check if lose
-    (if (< (. (. self.objects 1) :hunger) 0)
-        ; change state
-        (set state.current "END")
-
+    ; update starving -- have to do it like this so that it updates the state in game properly
+    (let [hero (. self.objects 1)]
+        ; check if lose
+        (if (hero:starving dt)
+            ; change state
+            (set state.current "END")
+        )
     )
 
     ; world update
     (self.world:update dt)
 
-    ; object update 
+    ; object update
     (utils.tmapupdate self.objects dt)
 )
 
 ; DRAW
 
-(fn draw [self] 
-    
+(fn draw [self]
+
     ; draw world
     (self.world:drawmap)
 
@@ -64,7 +63,7 @@
 (local InitState {
 
     ; Class instances
-    :world nil    
+    :world nil
     :objects nil
     :hud nil
 
@@ -110,7 +109,7 @@
         (addcreatures game)
 
         ; add food
-        (addfood game)    
+        (addfood game)
 
         ; bind hud
         (tset game :hud HUD)
