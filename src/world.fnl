@@ -29,13 +29,13 @@
 
 (fn drawmap [self]
     "Draw the background"
-    (let [
-        xhalf (- half-width self.x) 
-        yhalf (- half-height self.y)
+    (let [xhalf (- half-width self.x)
+          yhalf (- half-height self.y)
+          (ox oy) (unpack [(- self.x half-width) (- self.y half-height)])
         ]
         (love.graphics.draw self.floormesh xhalf yhalf)
         ; draw window ontop
-        (self.window:draw xhalf yhalf)
+        (self.window:draw ox oy)
     )
 )
 
@@ -55,10 +55,8 @@
     (values self.x self.y)
 )
 
-(fn inwindow [self hero]
-    (let [(x y) (hero:position)]
-        (self.window:isinside x y)
-    )
+(fn inwindow [self]
+    self.window.inwindow
 )
 
 (fn update [self dt]
@@ -124,7 +122,6 @@
         mapcoords []
         (width height) (unpack instance.limits)
         s (. instance :floor-texture-scale)
-        RoomWindow (require :src.roomwindow)
         ]
         (table.insert mapcoords [0 0            0 0])
         (table.insert mapcoords [width 0        s 0])
@@ -133,9 +130,6 @@
 
         ; assign textures to instance
         (newfloortexture instance mapcoords)
-
-        ; init a window
-        (set instance.window (RoomWindow.new instance))
     )
 )
 
@@ -166,23 +160,30 @@
     ; MESHES
     :floormesh nil
     :wallmesh nil
-    
+
     ; ROOM WINDOW
     :window nil
 
 })
 ; CONSTRUCTOR
 (fn new [x y]
-    (let [instance (utils.tcopy World)]
+    (let [instance (utils.tcopy World)
+          RoomWindow (require :src.roomwindow)]
         ; Meshing and map
         (newmap instance)
+
         ; World position
         (set instance.x x)
         (set instance.y y)
+
         ; New physics world with no gravity and sleepable bodies
         (set instance.physics (love.physics.newWorld 0 0 true))
         (instance.physics:setCallbacks collision-start-cb collision-end-cb)
+
+        ; Add walls to the room
         (create-walls instance)
+        ; and the window
+        (set instance.window (RoomWindow.new instance))
 
         instance
     )

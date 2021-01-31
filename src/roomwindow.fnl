@@ -1,125 +1,93 @@
 (local utils (require :src.utils))
 
+(local window-height 200)
+(local window-width 700)
+
 ; METHODS
 
-(fn isinside [self x y]
-    ; awful way of doing this 
-    (var ret false)
-
-    (let [(x_min x_max y_min y_max) (unpack self.boundingbox)]
-        (when (and (>= x x_min) (<= x x_max) (>= y y_min) (<= y y_max))
-            (set ret true)
+(fn draw [self ox oy]
+    (love.graphics.setColor 1 1 1 0.7)
+    (let [pts [(self.body:getWorldPoints (self.shape:getPoints))]
+          offpts []]
+        (for [i 1 (length pts) 2]
+            (do
+                (tset offpts i (- (. pts i) ox))
+                (tset offpts (+ i 1) (- (. pts (+ i 1)) oy))
+            )
         )
-
+        (love.graphics.polygon :fill (unpack offpts))
     )
-    ret
 )
 
-
-(fn draw [self xhalf yhalf]
-    (love.graphics.setColor 1 1 1 0.7)
-    (let [
-        xpos (+ xhalf self.x)
-        ypos (+ yhalf self.y)
-        ]
-        (if self.vertical
-            (do
-                (love.graphics.rectangle :fill (- xpos self.HEIGHT) ypos self.HEIGHT self.WIDTH)
+(fn randompos [limits]
+    (let [scale (/ (math.random 0 100 ) 100)
+          (xlimit ylimit) (unpack limits)]
+        (if (< (math.random 0 10) 5)
+            ; vertical wall
+            (values
+                (math.max (* (math.random 0 1) xlimit) window-height)
+                (math.max (math.min (* scale ylimit) (- ylimit window-width) ) window-width)
+                window-height
+                window-width
             )
-            ; horizontal
-            (do
-                (love.graphics.rectangle :fill xpos (- ypos self.HEIGHT) self.WIDTH self.HEIGHT)
+            ; horizontal wall
+            (values
+                (math.max (math.min (* scale xlimit) (- xlimit window-width) ) window-width)
+                (math.max (* (math.random 0 1) ylimit) window-height)
+                window-width
+                window-height
             )
         )
-    
     )
+)
+
+(fn collide-with [self other contact]
+    (set self.inwindow true)
+)
+
+(fn part-with [self other contact]
+    (set self.inwindow false)
 )
 
 ; INTERFACE
 
 (local RoomWindow {
 
-    :x 0
-    :y 0 
-    :vertical false
+    :body nil
+    :shape nil
+    :fixture nil
 
-    :boundingbox nil ; [xmin xmax ymin ymax]
+    ; COLLISION attributes
+    :edible false
+    :collide-with collide-with
+    :part-with part-with
+    :inwindow false
 
     ; CONFIG
-
-    :WIDTH 700
-    :HEIGHT 200  
+    :WIDTH window-width
+    :HEIGHT window-height
 
     :draw draw
-    :isinside isinside ; returns true/false position inside the window area
 })
 
-
-; CONSTRUCTORS
-
-(fn newboundingbox [instance]
-    (let [
-        ret []
-        ]
-        (if instance.vertical 
-            (do ; vertical config
-                (tset ret 1 (- instance.x instance.HEIGHT))
-                (tset ret 2 instance.x)
-                (tset ret 3 instance.y)
-                (tset ret 4 (+ instance.y instance.WIDTH))
-            
-            )
-            (do ; horizontal config
-                (tset ret 1 instance.x)
-                (tset ret 2 (+ instance.x instance.WIDTH))
-                (tset ret 3 (- instance.y instance.HEIGHT))
-                (tset ret 4 instance.y)
-            )
-        ) 
-        ret    
-    )
-)
-
-(fn randompos [limits]
-    (let [
-        scale (/ (math.random 0 100 ) 100)
-        ret []
-        (xlimit ylimit) (unpack limits)
-        ]
-        (if (= (math.random 0 1) 0)
-            ; vertical wall
-            (do 
-                (tset ret 1 (math.max (* (math.random 0 1) xlimit) RoomWindow.HEIGHT))
-                (tset ret 2 (math.max (math.min (* scale ylimit) (- ylimit RoomWindow.WIDTH) ) RoomWindow.WIDTH)) ; clamped
-                (tset ret 3 true)
-            )
-            ; horizontal wall 
-            (do 
-                (tset ret 1 (math.max (math.min (* scale xlimit) (- xlimit RoomWindow.WIDTH) ) RoomWindow.WIDTH) )
-                (tset ret 2 (math.max (* (math.random 0 1) ylimit) RoomWindow.HEIGHT))
-                (tset ret 3 false)
-            )
-        )   
-        ret
-    )
-
-)
-
 (fn new [world]
-    (let [
-        instance {}
-        (x y vert) (unpack (randompos world.limits))
-        ]
+    (let [physicsworld (. world :physics)
+          (x y w h) (randompos world.limits)
+          instance {}]
         (utils.tadd instance RoomWindow)
-        (set instance.x x)
-        (set instance.y y)
-        (set instance.vertical vert)
-        (set instance.boundingbox (newboundingbox instance))
+
+        (set instance.body (love.physics.newBody physicsworld x y :static))
+        (set instance.shape (love.physics.newRectangleShape w h))
+        (set instance.fixture (love.physics.newFixture instance.body instance.shape))
+
+        ; We only want collision callbacks
+        (instance.fixture:setSensor true)
+        ; Attach an instance reference to the fixture for collision reporting
+        (instance.fixture:setUserData instance)
+
         instance
     )
 
 )
 
-{
-   :new new
-}
+{:new new}

@@ -35,7 +35,7 @@
             (set state.current "END-L")
         )
         ; check win condition
-        (if (self.world:inwindow hero)
+        (if (self.world:inwindow)
             (set state.current "END-W")
         )
     )
