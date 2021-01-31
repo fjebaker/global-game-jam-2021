@@ -49,7 +49,7 @@
 
     (let [[a b] pos]
     
-        (love.graphics.draw (love.graphics.newImage "assets/start_menu_bg.png") 0 0)
+        (love.graphics.draw (love.graphics.newImage "assets/start_menu_bg.png") 0 0 0 0.7 0.7 0 0 0)
 
         (love.graphics.print "Kafkaesque - Start Menu." 100 50)
 
