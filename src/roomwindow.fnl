@@ -8,12 +8,10 @@
 
     (let [(x_min x_max y_min y_max) (unpack self.boundingbox)]
         (when (and (>= x x_min) (<= x x_max) (>= y y_min) (<= y y_max))
-            (print "YOU WIN")
             (set ret true)
         )
 
     )
-
     ret
 )
 
