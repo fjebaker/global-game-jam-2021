@@ -26,10 +26,6 @@
     :edible true
     :draggable true
 
-    ; PHYSICS QUANTS
-    :mass 0.2
-    :damping 0.5
-
     ; ATTRIBUTES
     :amount max-food ; used as maximum amount
     :fclass 0 ; food class
@@ -39,22 +35,16 @@
 (fn new [foodtype x y physicsworld]
     (let [
             Food (require (.. "src.foods." foodtype))
+            attributes {}
             instance {}
         ]
-        (Entity.new instance x y physicsworld :dynamic)
-        (utils.tadd instance FoodObject)
-        (utils.tmerge instance Food)
-        ; image
-        (utils.tloadimage instance 100 100)
+        (utils.tadd attributes FoodObject)
+        (utils.tadd attributes Food)
+        (Entity.new instance attributes x y physicsworld :dynamic)
+
         ; calculate initial tinting
         (updatetint instance)
 
-        ; physics
-        (set instance.shape (love.physics.newRectangleShape 100 100))
-        (set instance.fixture (love.physics.newFixture instance.body instance.shape))
-        (instance.body:setMass instance.mass)
-        (instance.body:setLinearDamping instance.damping)
-        (instance.body:setAwake true)
         ; Attach an instance reference to the fixture for collision reporting
         (instance.fixture:setUserData instance)
 

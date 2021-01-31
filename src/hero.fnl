@@ -71,6 +71,7 @@
     ; PHYSICS QUANTS
     :mass 0.02
     :damping 2
+    :bbox [100 210]
 
     ; STATS
     :hunger 75
@@ -81,8 +82,6 @@
 
     ; IMAGE VALS
     :image "assets/beetle.png"
-    :X_MID 137
-    :Y_MID 150
 
     ; OVERRIDES
     :update update
@@ -94,22 +93,12 @@
 
 (fn new [x y world]
     (let [instance {}]
-        (Entity.new instance x y world.physics :dynamic)
-        (utils.tadd instance Hero)
+        (Entity.new instance Hero x y world.physics :dynamic)
 
         (set instance._world world)
 
-        ; Set up character physics
-        (set instance.shape (love.physics.newRectangleShape 250 270))
-        (set instance.fixture (love.physics.newFixture instance.body instance.shape))
-        (instance.body:setMass instance.mass)
-        (instance.body:setLinearDamping instance.damping)
-        (instance.body:setAwake true)
         ; Attach an instance reference to the fixture for collision reporting
         (instance.fixture:setUserData instance)
-
-        ; load image from path
-        (utils.tloadimage instance 137 150)
 
         instance
     )
