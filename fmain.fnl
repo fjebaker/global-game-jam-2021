@@ -3,6 +3,8 @@
 
 (local startmenu (require :src.start_menu))
 (local pausemenu (require :src.pause_menu))
+(local helpmenu (require :src.help_menu))
+(local finalmenu (require :src.final_menu))
 
 (local Kafkaesque (require :src.Kafkaesque))
 
@@ -33,6 +35,16 @@
     (if (= state.current "HOME")
         (do
             (startmenu:draw)
+        )
+    )
+    (if (= state.current "END")
+        (do
+            (finalmenu:draw)
+        )
+    )
+     (if (= state.current "HELP")
+        (do
+            (helpmenu:draw)
         )
     )
 )
@@ -68,6 +80,16 @@
         (do
             (startmenu.update dt)
         )
+        ; help
+        (= state.current "HELP")
+        (do
+            (helpmenu.update dt)
+        )
+        ;final
+        (= state.current "END")
+        (do
+            (finalmenu.update dt)
+        )
         ; Paused state
         (= state.current "PAUSE")
         (do
@@ -92,6 +114,7 @@
 
             )
         )
+        
 
     )
 )

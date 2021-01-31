@@ -33,7 +33,7 @@
     ; check if lose
     (if (< (. (. self.objects 1) :hunger) 0)
         ; change state
-        (set state.current "HOME")
+        (set state.current "END")
 
     )
 

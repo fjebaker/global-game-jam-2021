@@ -21,10 +21,11 @@
 ;)
 ;(addButton "Settings"  settings_funct)
 ;
-;(fn donate_funct []
-;    (print "donate")
-;)
-;(addButton "Donate to the Devs" donate_funct)
+(fn help_funct []
+    (var state (require :src.state))
+    (set state.current "HELP")
+)
+(addButton "help me Im a beetle?" help_funct)
 
 (fn quit_funct []
     (var state (require :src.state))
@@ -50,7 +51,7 @@
 
     (let [[a b] pos]
     
-        (love.graphics.draw (love.graphics.newImage "assets/pause_menu_bg.png") 0 0)
+        (love.graphics.draw (love.graphics.newImage "assets/pause_menu_bg.jpg") 0 0 0 0.863 0.863 0 0)
 
         (love.graphics.print "Kafkaesque - Pause Menu." 100 50)
 
