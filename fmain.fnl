@@ -3,6 +3,7 @@
 (local william (require :src.william))
 
 (local startmenu (require :src.start_menu))
+(local credsmenu (require :src.creds_menu))
 (local pausemenu (require :src.pause_menu))
 (local helpmenu (require :src.help_menu))
 (local finalmenu (require :src.final_menu))
@@ -39,6 +40,11 @@
     (if (= state.current "HOME")
         (do
             (startmenu:draw)
+        )
+    )
+        (if (= state.current "CREDS")
+        (do
+            (credsmenu:draw)
         )
     )
     (if (= state.current "END-L")
@@ -88,6 +94,11 @@
         (= state.current "HOME")
         (do
             (startmenu.update dt)
+        )
+        ; creds
+        (= state.current "CREDS")
+        (do
+            (credsmenu.update dt)
         )
         ; help
         (= state.current "HELP")
