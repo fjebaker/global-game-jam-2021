@@ -1,9 +1,8 @@
 # global-game-jam-2021
-Small game based apon KafKa's book metamorphism made using LÖVE & Fennel.
-Authors:[dustpancake](https://github.com/dustpancake)[jwiggins](https://github.com/jwiggins)[shellywell123](https://github.com/shellywell123)
-
+Small game based apon Kafka's book metamorphism made using LÖVE & Fennel.
+Authors: [dustpancake](https://github.com/dustpancake) [jwiggins](https://github.com/jwiggins) [shellywell123](https://github.com/shellywell123)
 <p float="left">
-  <img src="assets/screenshot.png" width="400" />
+  <img src="assets/screenshot.png" width="800" />
 </p>
 
 
