@@ -1,6 +1,6 @@
 ; IMPORTS
 (local Menu (require :src.menu))
-(local state (require :src.state))
+(local state-machine (require :src.state))
 
 (local help-text "Help I'm a beetle?
 You have awoken as a beetle in a foreign world you once knew.
@@ -11,7 +11,7 @@ Use 'W-A-S-D' or arrow keys crawl to freedom.")
 
 ; METHODS
 
-(fn back_func [] (set state.current "PAUSE"))
+(fn back_func [] (state-machine:switch :PAUSE))
 
 ; CONSTRUCTOR
 

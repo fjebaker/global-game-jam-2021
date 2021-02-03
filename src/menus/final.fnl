@@ -1,6 +1,6 @@
 ; IMPORTS
 (local Menu (require :src.menu))
-(local state (require :src.state))
+(local state-machine (require :src.state))
 
 (local kafka-words "``Slept, awoke, slept, awoke, miserable life''\n-Franz Kafka")
 (local lose-text (.. "Kafkaesque - Fin. (You did not survive)\n\n" kafka-words))
@@ -10,7 +10,7 @@
 
 ; METHODS
 
-(fn home_func [] (set state.current "HOME"))
+(fn home_func [] (state-machine:switch :HOME))
 
 ; CONSTRUCTOR
 
@@ -21,12 +21,12 @@
         ; Decide which text/image to display
         (var text "")
         (var image "")
-        (if (= state.current "END-L")
+        (if (= state-machine.current "END-L")
             (do
                 (set text lose-text)
                 (set image lose-image)
             )
-            (= state.current "END-W")
+            (= state-machine.current "END-W")
             (do
                 (set text win-text)
                 (set image win-image)

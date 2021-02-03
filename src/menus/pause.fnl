@@ -1,12 +1,12 @@
 ; IMPORTS
 (local Menu (require :src.menu))
-(local state (require :src.state))
+(local state-machine (require :src.state))
 
 ; METHODS
 
-(fn play_func [] (set state.current "IN-GAME"))
-(fn help_func [] (set state.current "HELP"))
-(fn quit_func [] (set state.current "HOME"))
+(fn play_func [] (state-machine:switch :IN-GAME))
+(fn help_func [] (state-machine:switch :HELP))
+(fn quit_func [] (state-machine:switch :HOME))
 
 ; CONSTRUCTOR
 

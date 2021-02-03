@@ -1,6 +1,6 @@
 ; IMPORTS
 (local Menu (require :src.menu))
-(local state (require :src.state))
+(local state-machine (require :src.state))
 
 (local credits "Authors:
 dustpancake, jwiggins & shellywell123
@@ -26,7 +26,7 @@ Franz Kafka for the inspiration.")
     (love.system.openURL "https://en.wikipedia.org/wiki/The_Metamorphosis")
 )
 
-(fn home_func [] (set state.current "HOME"))
+(fn home_func [] (state-machine:switch :HOME))
 
 ; CONSTRUCTOR
 

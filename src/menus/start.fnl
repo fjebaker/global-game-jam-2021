@@ -1,12 +1,12 @@
 ; IMPORTS
 (local Menu (require :src.menu))
-(local state (require :src.state))
+(local state-machine (require :src.state))
 
 ; METHODS
 
-(fn play_func [] (set state.current "RESET"))
+(fn play_func [] (state-machine:switch :RESET))
 (fn quit_func [] (love.event.quit 0))
-(fn creds_func [] (set state.current "CREDS"))
+(fn creds_func [] (state-machine:switch :CREDS))
 
 ; CONSTRUCTOR
 
