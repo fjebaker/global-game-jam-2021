@@ -18,6 +18,16 @@
     )
 )
 
+(fn draw-buttons [buttons x y selected-index]
+    (each [idx butt (ipairs buttons)]
+        (let [offset (if (= idx selected-index) selected-indent 0)
+              bx (+ x offset)
+              by (+ y (* idx button-spacing))]
+            (love.graphics.print butt.text bx by)
+        )
+    )
+)
+
 (macro with-font [font func]
     "Run some code with a temporary font setting"
     `(if (not= nil ,font)
@@ -45,19 +55,9 @@
         )
     )
     (let [(x y) (unpack self.buttongroup.position)
-          selidx self.buttongroup.selected-index
-          font self.buttongroup.font]
-        (each [idx butt (ipairs self.buttongroup.buttons)]
-            (do
-                (var offset 0)
-                (when (= idx selidx) (set offset selected-indent))
-                (let [bx (+ x offset)
-                      by (+ y (* idx button-spacing))]
-                    (with-font font
-                        (love.graphics.print butt.text bx by)
-                    )
-                )
-            )
+          selected-index self.buttongroup.selected-index]
+        (with-font self.buttongroup.font
+            (draw-buttons self.buttongroup.buttons x y selected-index)
         )
     )
 )
