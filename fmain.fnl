@@ -1,14 +1,15 @@
+(local Kafkaesque (require :src.Kafkaesque))
 (local utils (require :src.utils))
 (local audio (require :src.audio))
 (local william (require :src.william))
 
-(local startmenu (require :src.start_menu))
-(local credsmenu (require :src.creds_menu))
-(local pausemenu (require :src.pause_menu))
-(local helpmenu (require :src.help_menu))
-(local finalmenu (require :src.final_menu))
+; Menus
+(var startmenu nil)
+(var credsmenu nil)
+(var pausemenu nil)
+(var helpmenu nil)
+(var finalmenu nil)
 
-(local Kafkaesque (require :src.Kafkaesque))
 
 ; State
 (var state (require :src.state))
@@ -24,6 +25,18 @@
     (william.loadquotes)
     (william.playrandom)
     (audio.playsongloop)
+
+    (let [Credits (require :src.menus.credits)
+          Final (require :src.menus.final)
+          Help (require :src.menus.help)
+          Pause (require :src.menus.pause)
+          Start (require :src.menus.start)]
+        (set startmenu (Start.new))
+        (set credsmenu (Credits.new))
+        (set pausemenu (Pause.new))
+        (set helpmenu (Help.new))
+        (set finalmenu (Final.new))
+    )
 )
 
 (fn love.draw []
@@ -68,22 +81,39 @@
     :integrator 0
     :delay 0.1 ; button delay
 
-    :reset (fn reset [self] 
+    :reset (fn reset [self]
         (set self.integrator 0)
     )
-    :expired (fn expired [self] 
+    :expired (fn expired [self]
         (> self.integrator self.delay)
     )
-    :add (fn add [self dt] 
+    :add (fn add [self dt]
         (set self.integrator (+ self.integrator dt))
     )
 })
+
+(fn love.keypressed [key scancode isrepeat]
+    (if
+        (= state.current "HOME")
+        (startmenu:keypressed key isrepeat)
+        (= state.current "CREDS")
+        (credsmenu:keypressed key isrepeat)
+        (= state.current "HELP")
+        (helpmenu:keypressed key isrepeat)
+        (= state.current "END-L")
+        (finalmenu:keypressed key isrepeat)
+        (= state.current "END-W")
+        (finalmenu:keypressed key isrepeat)
+        (= state.current "PAUSE")
+        (pausemenu:keypressed key isrepeat)
+    )
+)
 
 (fn love.update [dt]
     (clock:add dt)
     ;check when to start game
     (if (= state.current "RESET")
-        (do 
+        (do
             (set game (Kafkaesque.newgame))
             (set state.current "IN-GAME")
         )
@@ -128,7 +158,7 @@
 
         ; Game state
         (= state.current "IN-GAME")
-        (do 
+        (do
             ; update game
             (game:update dt)
 
@@ -140,7 +170,7 @@
 
             )
         )
-        
+
 
     )
 )
