@@ -19,6 +19,7 @@
 )
 
 (fn update [self dt]
+    (Entity.update self dt)
     (set self.integrator (+ self.integrator dt))
     (if (> self.integrator self.clock)
         ; update clock value

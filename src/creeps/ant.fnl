@@ -9,5 +9,7 @@
     :MIN_CLOCK 100
     :MAX_VEL 100
 
-    :image "assets/ant.png"
+    :image "assets/ant_sheet.png"
+    :frame-x 228
+    :frame-y 250
 }
