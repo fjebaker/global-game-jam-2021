@@ -1,69 +1,51 @@
 (local utils (require :src.utils))
 (local audio (require :src.audio))
-(var state (require :src.state))
+(local state-machine (require :src.state))
 
 ; METHODS
 
-(fn addfood [game]
-    (let [Food (require :src.food)]
-        (for [i 1 game.NUM_FOOD]
-            (tset game.objects (+ 1 (length game.objects))
-                (Food.new :flower (math.random 0 game.WORLD_WIDTH) (math.random 0 game.WORLD_HEIGHT) game.world.physics)
-            )
-        )
-    )
+(fn draw [self]
+    ; draw world
+    (self.world:drawmap)
+    ; draw all objects
+    (self.world:draw self.objects)
+    ; draw HUD
+    (self.hud.draw (. self.objects 1)) ; pass hero
 )
 
-(fn addcreatures [game]
-    (let [Creep (require :src.creature)]
-        (for [i 1 game.NUM_FOOD]
-            (tset game.objects (+ 1 (length game.objects))
-                (Creep.new :ant (math.random 0 game.WORLD_WIDTH) (math.random 0 game.WORLD_HEIGHT) game.world.physics)
-            )
-        )
+(fn keypressed [self key isrepeat]
+    (when (= key :escape)
+        (state-machine:switch :PAUSE)
     )
 )
-
-; UPDATE
 
 (fn update [self dt]
-    ; update starving -- have to do it like this so that it updates the state in game properly
+    ; update starving
+    ; have to do it like this so that it updates the state in game properly
     (let [hero (. self.objects 1)]
         ; check if lose
         (if (hero:starving dt)
             ; change state
-            (do (audio.playlose)
-            (set state.current "END-L"))
+            (do
+                (audio.playlose)
+                (state-machine:switch :END-L)
+            )
         )
         ; check win condition
         (if (self.world:inwindow)
-            (do (audio.playwin)
-            (set state.current "END-W"))
+            (do
+                (audio.playwin)
+                (state-machine:switch :END-W)
+            )
         )
     )
 
     ; world update
     (self.world:update dt)
-
     ; object update
     (utils.tmapupdate self.objects dt)
-
 )
 
-; DRAW
-
-(fn draw [self]
-
-    ; draw world
-    (self.world:drawmap)
-
-    ; draw all objects
-    (self.world:draw self.objects)
-
-    ; draw HUD
-    (self.hud.draw (. self.objects 1)) ; pass hero
-
-)
 
 ; CONFIGURATION, INTERFACE AND DEFAULTS
 
@@ -88,11 +70,31 @@
     ; METHODS
 
     :draw draw
+    :keypressed keypressed
     :update update
 })
 
-
 ; CONSTRUCTOR / NEW GAME
+
+(fn addfood [game]
+    (let [Food (require :src.food)]
+        (for [i 1 game.NUM_FOOD]
+            (tset game.objects (+ 1 (length game.objects))
+                (Food.new :flower (math.random 0 game.WORLD_WIDTH) (math.random 0 game.WORLD_HEIGHT) game.world.physics)
+            )
+        )
+    )
+)
+
+(fn addcreatures [game]
+    (let [Creep (require :src.creature)]
+        (for [i 1 game.NUM_FOOD]
+            (tset game.objects (+ 1 (length game.objects))
+                (Creep.new :ant (math.random 0 game.WORLD_WIDTH) (math.random 0 game.WORLD_HEIGHT) game.world.physics)
+            )
+        )
+    )
+)
 
 (fn newgame []
     (let [
@@ -128,7 +130,4 @@
 
 
 ; EXPORTS
-
-{
-    :newgame newgame ; initializes a game state
-}
+{:newgame newgame}

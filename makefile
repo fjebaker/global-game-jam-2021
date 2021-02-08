@@ -5,7 +5,8 @@ ROOT_OUT := $(patsubst %.fnl,%.lua,$(wildcard *.fnl))
 SRC_OUT := $(patsubst %.fnl,%.lua,$(wildcard src/*.fnl))
 CREEP_OUT := $(patsubst %.fnl,%.lua,$(wildcard src/creeps/*.fnl))
 FOOD_OUT := $(patsubst %.fnl,%.lua,$(wildcard src/foods/*.fnl))
-COMPILED_OUT := $(ROOT_OUT) $(SRC_OUT) $(CREEP_OUT) $(FOOD_OUT)
+MENU_OUT := $(patsubst %.fnl,%.lua,$(wildcard src/menus/*.fnl))
+COMPILED_OUT := $(ROOT_OUT) $(SRC_OUT) $(CREEP_OUT) $(FOOD_OUT) $(MENU_OUT)
 
 run: ; love .
 
