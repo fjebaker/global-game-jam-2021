@@ -25,10 +25,11 @@
 )
 
 (fn update [self dt]
+    (Entity.update self dt)
     (when (< (self:eat (* dt self.depletion-rate)) 0) ; if no food left
         (self:deteriorate 0)
         (set self.edible false ) ; is not edible
-    ) 
+    )
 )
 
 (local FoodObject {

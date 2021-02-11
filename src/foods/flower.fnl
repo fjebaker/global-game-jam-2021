@@ -7,5 +7,9 @@
 
     :amount 70
     :fclass 0   ; Food Class
+
     :image "assets/flower.png"
+    :frame-x 200
+    :frame-y 200
+
 }

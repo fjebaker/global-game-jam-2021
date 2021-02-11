@@ -21,6 +21,7 @@
 ; METHODS
 
 (fn update [self dt]
+    (Entity.update self dt)
     ; Handle movement
     (each [key delta (pairs movements)]
         (when (love.keyboard.isDown key)
@@ -100,6 +101,8 @@
 
     ; IMAGE VALS
     :image "assets/beetle.png"
+    :frame-x 274
+    :frame-y 300
 
     ; OVERRIDES
     :update update

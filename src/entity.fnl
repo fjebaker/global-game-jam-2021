@@ -9,10 +9,13 @@
     (let [
             (x y) (self.body:getPosition)
             rotation (self.body:getAngle)
+            (idx _) (math.modf self.quad-index)
+            quad (. self.image-quads idx)
         ]
         (love.graphics.setColor self.rtint self.gtint self.btint self.atint) ; set custom tint
         (love.graphics.draw
             self.image
+            quad
             (- x ox) (- y oy)
             rotation
             1 1
@@ -33,11 +36,35 @@
     )
 )
 
+(fn init-animation [self]
+    (set self.X_MID (/ self.frame-x 2))
+    (set self.Y_MID (/ self.frame-y 2))
+    (let [width (self.image:getWidth)
+          height (self.image:getHeight)
+          quads []]
+        (for [y 1 height self.frame-y]
+            (for [x 1 width self.frame-x]
+                (tset quads (+ 1 (length quads))
+                    (love.graphics.newQuad (- x 1) (- y 1) self.frame-x self.frame-y width height)
+                )
+            )
+        )
+        (set self.image-quads quads)
+    )
+
+)
+
 (fn position [self]
     (self.body:getPosition)
 )
 
 (fn update [self dt]
+    (let [count (length self.image-quads)
+          (vx vy) (self.body:getLinearVelocity)
+          vmag (math.sqrt (+ (* vx vx) (* vy vy)))
+          nextidx (+ (* dt vmag 0.2) self.quad-index)]
+        (set self.quad-index (if (> nextidx count) 1 nextidx))
+    )
 )
 
 (fn collide-with [self other contact]
@@ -67,6 +94,10 @@
 
     ; IMAGE VALS
     :image ""
+    :image-quads []
+    :quad-index 1
+    :frame-x 0
+    :frame-y 0
     :X_MID 0
     :Y_MID 0
 
@@ -91,6 +122,7 @@
 
     ; load image from path
     (utils.tloadimage instance)
+    (init-animation instance)
 
     ; Init the physics state for the entity
     (set instance.body (love.physics.newBody physicsworld x y bodytype))
@@ -105,4 +137,7 @@
 
 
 ; MODULE EXPORTS
-{:new new}
+{
+    :new new
+    :update update
+}
