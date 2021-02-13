@@ -100,7 +100,7 @@
     :food nil
 
     ; IMAGE VALS
-    :image "assets/beetle.png"
+    :image "assets/beetle_sheet.png"
     :frame-x 274
     :frame-y 300
 
